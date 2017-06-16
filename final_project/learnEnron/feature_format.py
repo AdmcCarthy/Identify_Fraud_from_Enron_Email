@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+from __future__ import print_function
+import numpy as np
 
 """
     A general tool for converting data from the
@@ -30,10 +32,6 @@
     label is the _first_ item in feature_list--very important
     that poi is listed first!
 """
-
-
-import numpy as np
-from __future__ import print_function
 
 
 def featureFormat(dictionary, features, remove_NaN=True,
