@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-""" 
+
+"""
     A general tool for converting data from the
     dictionary format to an (n x k) python list that's 
     ready for training an sklearn algorithm
@@ -32,8 +33,10 @@
 
 
 import numpy as np
+from __future__ import print_function
 
-def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True, remove_any_zeroes=False, sort_keys = False):
+
+def featureFormat(dictionary, features, remove_NaN=True, remove_all_zeroes=True, remove_any_zeroes=False, sort_keys = False):
     """ convert dictionary to numpy array of features
         remove_NaN = True will convert "NaN" string to 0.0
         remove_all_zeroes = True will omit any data points for which

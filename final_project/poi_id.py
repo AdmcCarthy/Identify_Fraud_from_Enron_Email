@@ -4,6 +4,7 @@ import sys
 import pickle
 sys.path.append("../tools/")
 
+from learnEnron import feature_format
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
 
@@ -22,8 +23,8 @@ with open("final_project_dataset.pkl", "r") as data_file:
 my_dataset = data_dict
 
 ### Extract features and labels from dataset for local testing
-data = featureFormat(my_dataset, features_list, sort_keys = True)
-labels, features = targetFeatureSplit(data)
+data = feature_format.featureFormat(my_dataset, features_list, sort_keys=True)
+labels, features = feature_format.targetFeatureSplit(data)
 
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
