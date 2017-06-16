@@ -4,6 +4,8 @@ Identify Fraud from Enron Email
 
 **Problem posed in Udacity Intro to machine learning**
 
+I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, github repositories, etc.
+
 To re-run:
 
 poi_id.py
@@ -34,6 +36,13 @@ No3
 
 What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?  [relevant rubric item: “pick an algorithm”]
 
+.. csv-table:: Algorith comparisson
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Total_prediction", "True_positives", "False_positves", "True_negatives"
+   :widths: 20, 10, 10, 10, 10, 10, 10, 10, 10, 10
+
+   "GaussianNB", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "GaussianNB", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+
 ^^^
 No4
 ^^^
@@ -51,8 +60,6 @@ No6
 ^^^
 
 Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance. [relevant rubric item: “usage of evaluation metrics”]
-
-I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, github repositories, etc.
 
 -------------------------------------
 Code issues and Python 2 to 3 changes
