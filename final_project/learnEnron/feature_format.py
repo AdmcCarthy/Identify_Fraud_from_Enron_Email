@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
-""" 
+from __future__ import print_function
+import numpy as np
+
+"""
     A general tool for converting data from the
     dictionary format to an (n x k) python list that's 
     ready for training an sklearn algorithm
@@ -31,9 +34,9 @@
 """
 
 
-import numpy as np
-
-def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True, remove_any_zeroes=False, sort_keys = False):
+def featureFormat(dictionary, features, remove_NaN=True,
+                  remove_all_zeroes=True, remove_any_zeroes=False,
+                  sort_keys=False):
     """ convert dictionary to numpy array of features
         remove_NaN = True will convert "NaN" string to 0.0
         remove_all_zeroes = True will omit any data points for which
@@ -47,7 +50,6 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
         NOTE: first feature is assumed to be 'poi' and is not checked for
             removal for zero or missing values.
     """
-
 
     return_list = []
 
@@ -67,12 +69,12 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
             try:
                 dictionary[key][feature]
             except KeyError:
-                print "error: key ", feature, " not present"
+                print("error: key ", feature, " not present")
                 return
             value = dictionary[key][feature]
-            if value=="NaN" and remove_NaN:
+            if value == "NaN" and remove_NaN:
                 value = 0
-            tmp_list.append( float(value) )
+            tmp_list.append(float(value))
 
         # Logic for deciding whether or not to add the data point.
         append = True
@@ -81,6 +83,7 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
             test_list = tmp_list[1:]
         else:
             test_list = tmp_list
+
         ### if all features are zero and you want to remove
         ### data points that are all zero, do that here
         if remove_all_zeroes:
@@ -97,13 +100,13 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
                 append = False
         ### Append the data point if flagged for addition.
         if append:
-            return_list.append( np.array(tmp_list) )
+            return_list.append(np.array(tmp_list))
 
     return np.array(return_list)
 
 
-def targetFeatureSplit( data ):
-    """ 
+def targetFeatureSplit(data):
+    """
         given a numpy array like the one returned from
         featureFormat, separate out the first feature
         and put it into its own list (this should be the 
@@ -118,8 +121,8 @@ def targetFeatureSplit( data ):
     target = []
     features = []
     for item in data:
-        target.append( item[0] )
-        features.append( item[1:] )
+        target.append(item[0])
+        features.append(item[1:])
 
     return target, features
 

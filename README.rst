@@ -53,3 +53,52 @@ No6
 Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance. [relevant rubric item: “usage of evaluation metrics”]
 
 I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, github repositories, etc.
+
+-------------------------------------
+Code issues and Python 2 to 3 changes
+-------------------------------------
+
+^^^^^^^^^^^^^
+File Location
+^^^^^^^^^^^^^
+
+Kept getting errors about not being able to locate the file based off of the string in the original code.
+Changed to:
+
+.. code-block:: Pythoon
+
+    f = os.path.abspath("final_project/final_project_dataset.pkl")
+
+^^^^^^
+Pickle
+^^^^^^
+
+Changed code in both poi_id.py and tester.py to fit with python 3 and pickle otherwise a TypeError is returned.
+Now has to include "rb" (read binary) and "wb" (write binary) instead of "r" and "w" respectively.
+
+From:
+
+.. code-block:: Python
+
+   with open(f, "r") as data_file:
+       data_dict = pickle.load(data_file)
+
+To:
+
+.. code-block: Python
+
+    with open(f, "rb") as data_file:
+        data_dict = pickle.load(data_file)
+
+^^^^^^^^^^^^^^^^^^
+Depreciation of CV
+^^^^^^^^^^^^^^^^^^
+
+Code returns this warning.
+
+.. code-block: bash
+
+    .... :DeprecationWarning: This module
+    was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functio
+    ns are moved. Also note that the interface of the new CV iterators are different from that of this module. This module w
+    ill be removed in 0.20.
