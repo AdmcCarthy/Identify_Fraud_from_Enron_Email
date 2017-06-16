@@ -38,7 +38,7 @@ What algorithm did you end up using? What other one(s) did you try? How did mode
 
 .. csv-table:: Algorith comparisson
    :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Total_prediction", "True_positives", "False_positves", "True_negatives"
-   :widths: 20, 10, 10, 10, 10, 10, 10, 10, 10, 10
+   :widths: 20, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
 
    "GaussianNB", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
    "GaussianNB", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
