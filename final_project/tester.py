@@ -14,7 +14,7 @@ from __future__ import print_function
 import pickle
 import sys
 from sklearn.cross_validation import StratifiedShuffleSplit
-from learnEnron import featureformat
+from learnEnron import feature_format
 
 PERF_FORMAT_STRING = "\
 \tAccuracy: {:>0.{display_precision}f}\tPrecision: {:>0.{display_precision}f}\t\
@@ -24,8 +24,8 @@ RESULTS_FORMAT_STRING = "\tTotal predictions: {:4d}\tTrue positives: {:4d}\tFals
 
 
 def test_classifier(clf, dataset, feature_list, folds=1000):
-    data = featureformat.featureFormat(dataset, feature_list, sort_keys=True)
-    labels, features = featureformat.targetFeatureSplit(data)
+    data = feature_format.featureFormat(dataset, feature_list, sort_keys=True)
+    labels, features = feature_format.targetFeatureSplit(data)
     cv = StratifiedShuffleSplit(labels, folds, random_state=42)
     true_negatives = 0
     false_negatives = 0
@@ -56,9 +56,9 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
             elif prediction == 1 and truth == 1:
                 true_positives += 1
             else:
-                print "Warning: Found a predicted label not == 0 or 1."
-                print "All predictions should take value 0 or 1."
-                print "Evaluating performance for processed predictions:"
+                print("Warning: Found a predicted label not == 0 or 1.")
+                print("All predictions should take value 0 or 1.")
+                print("Evaluating performance for processed predictions:")
                 break
 
     try:
@@ -104,20 +104,20 @@ FEATURE_LIST_FILENAME = "my_feature_list.pkl"
 
 
 def dump_classifier_and_data(clf, dataset, feature_list):
-    with open(CLF_PICKLE_FILENAME, "w") as clf_outfile:
+    with open(CLF_PICKLE_FILENAME, "wb") as clf_outfile:
         pickle.dump(clf, clf_outfile)
-    with open(DATASET_PICKLE_FILENAME, "w") as dataset_outfile:
+    with open(DATASET_PICKLE_FILENAME, "wb") as dataset_outfile:
         pickle.dump(dataset, dataset_outfile)
-    with open(FEATURE_LIST_FILENAME, "w") as featurelist_outfile:
+    with open(FEATURE_LIST_FILENAME, "wb") as featurelist_outfile:
         pickle.dump(feature_list, featurelist_outfile)
 
 
 def load_classifier_and_data():
-    with open(CLF_PICKLE_FILENAME, "r") as clf_infile:
+    with open(CLF_PICKLE_FILENAME, "rb") as clf_infile:
         clf = pickle.load(clf_infile)
-    with open(DATASET_PICKLE_FILENAME, "r") as dataset_infile:
+    with open(DATASET_PICKLE_FILENAME, "rb") as dataset_infile:
         dataset = pickle.load(dataset_infile)
-    with open(FEATURE_LIST_FILENAME, "r") as featurelist_infile:
+    with open(FEATURE_LIST_FILENAME, "rb") as featurelist_infile:
         feature_list = pickle.load(featurelist_infile)
     return clf, dataset, feature_list
 

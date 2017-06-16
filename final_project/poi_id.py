@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import pickle
+import os
 from learnEnron import feature_format
 from tester import dump_classifier_and_data
 from sklearn import cross_validation, naive_bayes
@@ -10,8 +11,11 @@ from sklearn import cross_validation, naive_bayes
 ### The first feature must be "poi".
 features_list = ['poi', 'salary'] # You will need to use more features
 
-### Load the dictionary containing the dataset
-with open("final_project_dataset.pkl", "r") as data_file:
+# Use os.path.abspath to access the file
+f = os.path.abspath("final_project/final_project_dataset.pkl")
+
+# Changed to rb for python 3 to read binary
+with open(f, "rb") as data_file:
     data_dict = pickle.load(data_file)
 
 ### Task 2: Remove outliers
