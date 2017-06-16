@@ -89,3 +89,16 @@ To:
 
     with open(f, "rb") as data_file:
         data_dict = pickle.load(data_file)
+
+^^^^^^^^^^^^^^^^^^
+Depreciation of CV
+^^^^^^^^^^^^^^^^^^
+
+Code returns this warning.
+
+.. code-block: bash
+
+    .... :DeprecationWarning: This module
+    was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functio
+    ns are moved. Also note that the interface of the new CV iterators are different from that of this module. This module w
+    ill be removed in 0.20.
