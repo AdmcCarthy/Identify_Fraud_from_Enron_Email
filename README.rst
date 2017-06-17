@@ -6,13 +6,42 @@ Identify Fraud from Enron Email
 
 I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, github repositories, etc.
 
-To re-run:
-
-poi_id.py
 
 To test results:
 
-tester.py
+.. code-block:: bash
+    
+    $ tester.py
+
+To re-run:
+
+.. code-block:: bash
+
+    $ poi_id.py
+
+-------
+Results
+-------
+
+Using the default setting of one label and one feature we can take an intitial review. of the prediction.
+
+.. code-block:: python
+
+    features_list = ['poi', 'salary']
+
+The outputs for the initial algorithm (Gaussian Naive Bayes) is compared to two other algorithms.
+
+.. csv-table:: Algorith comparisson
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+
+   "GaussianNaiveBayes", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "RandomForest", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "AdaBoost", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "SVC", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "KMeans", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "LogisticRegression", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+
 
 ---------
 Questions
@@ -35,13 +64,6 @@ No3
 ^^^
 
 What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?  [relevant rubric item: “pick an algorithm”]
-
-.. csv-table:: Algorith comparisson
-   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Total_prediction", "True_positives", "False_positves", "True_negatives"
-   :widths: 20, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
-
-   "GaussianNB", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
-   "GaussianNB", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
 
 ^^^
 No4
@@ -92,7 +114,7 @@ From:
 
 To:
 
-.. code-block: Python
+.. code-block:: Python
 
     with open(f, "rb") as data_file:
         data_dict = pickle.load(data_file)
@@ -103,9 +125,32 @@ Depreciation of CV
 
 Code returns this warning.
 
-.. code-block: bash
-
-    $ python /Users/joeblogs/Identify_Fraud_from_Enron_Email/final_project/poi_id.py
     DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functio
     ns are moved. Also note that the interface of the new CV iterators are different from that of this module. This module w
     ill be removed in 0.20.
+
+Changed to:
+
+.. code-block: python
+
+    cv = model_selection.StratifiedShuffleSplit(labels, folds, random_state=42)
+
+.. code-block: python
+
+    features_train, features_test, labels_train, labels_test = \
+    model_selection.train_test_split(features, labels,
+                                      test_size=0.3,
+                                      random_state=42)
+
+^^^^^^
+urllib
+^^^^^^
+
+urlib has been changed in python 3, needed within startup.py
+New code requires urllib.request module.
+
+Changed to:
+
+.. code-block: python
+
+    urllib.request.urlretrieve(url, filename="../enron_mail_20150507.tgz")
