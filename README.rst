@@ -36,9 +36,17 @@ No3
 
 What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?  [relevant rubric item: “pick an algorithm”]
 
+Using the default setting of one label and one feature we can take an intitial review. of the prediction.
+
+.. code-block:: python
+
+    features_list = ['poi', 'salary']
+
+The outputs for the initial algorithm (Gaussian Naive Bayes) is compared to two other algorithms.
+
 .. csv-table:: Algorith comparisson
-   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Total_prediction", "True_positives", "False_positves", "True_negatives"
-   :widths: 20, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 
    "GaussianNB", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
    "GaussianNB", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
@@ -92,7 +100,7 @@ From:
 
 To:
 
-.. code-block: Python
+.. code-block:: Python
 
     with open(f, "rb") as data_file:
         data_dict = pickle.load(data_file)

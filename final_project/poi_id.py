@@ -4,7 +4,10 @@ import pickle
 import os
 from learnEnron import feature_format
 from tester import dump_classifier_and_data
-from sklearn import cross_validation, naive_bayes
+from sklearn import (
+                     cross_validation, naive_bayes,
+                     ensemble, cluster, svm
+                    )
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
@@ -33,8 +36,13 @@ labels, features = feature_format.targetFeatureSplit(data)
 ### you'll need to use Pipelines. For more info:
 ### http://scikit-learn.org/stable/modules/pipeline.html
 
-# Provided to give you a starting point. Try a variety of classifiers.
-clf = naive_bayes.GaussianNB()
+# Set classifier
+# clf = naive_bayes.GaussianNB()
+clf = ensemble.RandomForestClassifier()
+# clf = ensemble.AdaBoostClassifier()
+# clf = svm.SVC()
+# clf = cluster.KMeans()
+# clf = inear_model.LogisticRegression()
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
