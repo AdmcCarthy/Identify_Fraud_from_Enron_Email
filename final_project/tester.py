@@ -12,6 +12,7 @@
 
 from __future__ import print_function
 import pickle
+import time
 from sklearn import model_selection
 from learnEnron import feature_format
 
@@ -45,8 +46,15 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
             labels_test.append(labels[jj])
 
         # fit the classifier using training set, and test on test set
+        t0 = time()
         clf.fit(features_train, labels_train)
+        print("training time:", round(time()-t0, 3), "s")
+
+        # Make predictions using fitted classifier
+        t0 = time()
         predictions = clf.predict(features_test)
+        print("prediction time:", round(time()-t0, 3), "s")
+
         for prediction, truth in zip(predictions, labels_test):
             if prediction == 0 and truth == 0:
                 true_negatives += 1
