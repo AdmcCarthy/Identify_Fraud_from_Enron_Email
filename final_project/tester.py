@@ -93,6 +93,7 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
                                            )
               )
         print("")
+
     except:
         print("Got a divide by zero when trying out:", clf)
         print("Precision or recall may be undefined"

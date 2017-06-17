@@ -6,13 +6,42 @@ Identify Fraud from Enron Email
 
 I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, github repositories, etc.
 
-To re-run:
-
-poi_id.py
 
 To test results:
 
-tester.py
+.. code-block:: bash
+    
+    $ tester.py
+
+To re-run:
+
+.. code-block:: bash
+
+    $ poi_id.py
+
+-------
+Results
+-------
+
+Using the default setting of one label and one feature we can take an intitial review. of the prediction.
+
+.. code-block:: python
+
+    features_list = ['poi', 'salary']
+
+The outputs for the initial algorithm (Gaussian Naive Bayes) is compared to two other algorithms.
+
+.. csv-table:: Algorith comparisson
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+
+   "GaussianNaiveBayes", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "RandomForest", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "AdaBoost", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "SVC", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "KMeans", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "LogisticRegression", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+
 
 ---------
 Questions
@@ -35,21 +64,6 @@ No3
 ^^^
 
 What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?  [relevant rubric item: “pick an algorithm”]
-
-Using the default setting of one label and one feature we can take an intitial review. of the prediction.
-
-.. code-block:: python
-
-    features_list = ['poi', 'salary']
-
-The outputs for the initial algorithm (Gaussian Naive Bayes) is compared to two other algorithms.
-
-.. csv-table:: Algorith comparisson
-   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
-   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
-
-   "GaussianNB", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
-   "GaussianNB", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
 
 ^^^
 No4
