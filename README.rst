@@ -141,3 +141,16 @@ Changed to:
     model_selection.train_test_split(features, labels,
                                       test_size=0.3,
                                       random_state=42)
+
+^^^^^^
+urllib
+^^^^^^
+
+urlib has been changed in python 3, needed within startup.py
+New code requires urllib.request module.
+
+Changed to:
+
+.. code-block: python
+
+    urllib.request.urlretrieve(url, filename="../enron_mail_20150507.tgz")
