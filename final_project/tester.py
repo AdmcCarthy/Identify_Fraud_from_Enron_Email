@@ -12,8 +12,7 @@
 
 from __future__ import print_function
 import pickle
-import sys
-from sklearn.cross_validation import StratifiedShuffleSplit
+from sklearn import model_selection
 from learnEnron import feature_format
 
 PERF_FORMAT_STRING = "\
@@ -26,11 +25,13 @@ RESULTS_FORMAT_STRING = "\tTotal predictions: {:4d}\tTrue positives: {:4d}\tFals
 def test_classifier(clf, dataset, feature_list, folds=1000):
     data = feature_format.featureFormat(dataset, feature_list, sort_keys=True)
     labels, features = feature_format.targetFeatureSplit(data)
-    cv = StratifiedShuffleSplit(labels, folds, random_state=42)
+    cv = model_selection.StratifiedShuffleSplit(labels, folds, random_state=42)
+
     true_negatives = 0
     false_negatives = 0
     true_positives = 0
     false_positives = 0
+
     for train_idx, test_idx in cv:
         features_train = []
         features_test = []

@@ -5,7 +5,7 @@ import os
 from learnEnron import feature_format
 from tester import dump_classifier_and_data
 from sklearn import (
-                     cross_validation, naive_bayes,
+                     model_selection, naive_bayes,
                      ensemble, cluster, svm
                     )
 
@@ -54,7 +54,7 @@ clf = ensemble.RandomForestClassifier()
 # Example starting point. Try investigating other evaluation techniques!
 
 features_train, features_test, labels_train, labels_test = \
-    cross_validation.train_test_split(features, labels,
+    model_selection.train_test_split(features, labels,
                                       test_size=0.3,
                                       random_state=42)
 

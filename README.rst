@@ -111,9 +111,19 @@ Depreciation of CV
 
 Code returns this warning.
 
-.. code-block: bash
-
-    $ python /Users/joeblogs/Identify_Fraud_from_Enron_Email/final_project/poi_id.py
     DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functio
     ns are moved. Also note that the interface of the new CV iterators are different from that of this module. This module w
     ill be removed in 0.20.
+
+Changed to:
+
+.. code-block: python
+
+    cv = model_selection.StratifiedShuffleSplit(labels, folds, random_state=42)
+
+.. code-block: python
+
+    features_train, features_test, labels_train, labels_test = \
+    model_selection.train_test_split(features, labels,
+                                      test_size=0.3,
+                                      random_state=42)
