@@ -15,7 +15,8 @@ from sklearn import (
 features_list = ['poi', 'salary'] # You will need to use more features
 
 # Use os.path.abspath to access the file
-f = os.path.abspath("final_project/final_project_dataset.pkl")
+file_dir = os.path.dirname(os.path.realpath(__file__))
+f = os.path.join(file_dir, "final_project_dataset.pkl")
 
 # Changed to rb for python 3 to read binary
 with open(f, "rb") as data_file:
