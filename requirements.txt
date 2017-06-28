@@ -1,3 +1,4 @@
-sklearn
-numpy
-pandas
+python=2s
+numpy==1.13.0
+pandas==0.20.2
+scikit-learn==0.18.2
