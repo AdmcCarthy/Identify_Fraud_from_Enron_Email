@@ -2,20 +2,25 @@
 Identify Fraud from Enron Email
 ===============================
 
-**Problem posed in Udacity Intro to machine learning**
+*Adam McCarthy*
 
+*Problem posed in Udacity Intro to machine learning*
 
+Getting Started
+---------------
 
 To test results:
 
 .. code-block:: bash
     
+    $ cd final_project
     $ tester.py
 
 To re-run:
 
 .. code-block:: bash
 
+    $ cd final_project
     $ poi_id.py
 
 
