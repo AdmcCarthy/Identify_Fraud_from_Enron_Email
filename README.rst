@@ -56,6 +56,9 @@ The email dataset is from ` <https://www.cs.cmu.edu/~./enron/>`_
 Email dataset consists of 150 directories each reflecting a person,
 specified as lastname followed by first letter of first name.
 
+There are 86 people with email data suggesting that those
+without financial data have not been used.
+
 Within poi_names.txt it can be seen with a yes (y),
 no (n) column if the poi has an email directory
 in the dataset. This means the majority
@@ -79,6 +82,177 @@ The dataset contains data on 18 of the POIs.
 Note that when missing values occur 
 featureFormat() and targetFeatureSplit()
 will replace this with 0.
+
+Most of the values have a range of missing parameters,
+see table below.
+
+.. csv-table:: Datset Variables
+   :header: "Variable, "Missing Values"
+   :widths: 15, 5
+
+    "bonus", 64
+    "deferral_payments", 107
+    "deferred_income", 97
+    "director_fees", 129
+    "email_address", 35
+    "exercised_stock_options", 44
+    "expenses", 51
+    "from_messages", 60
+    "from_poi_to_this_person", 60
+    "from_this_person_to_poi", 60
+    "loan_advances", 142
+    "long_term_incentive", 80
+    "other", 53
+    "poi", 0
+    "restricted_stock", 36
+    "restricted_stock_deferred", 128
+    "salary", 51
+    "shared_receipt_with_poi", 60
+    "to_messages", 60
+    "total_payments", 21
+    "total_stock_value", 20
+
+Email Variables
+---------------
+
+From messages
+~~~~~~~~~~~~~
+
+Out of 86 people the mean number of messages from them is 609.
+The range is 12 to 14368, with a median of 41. 
+This suggests a highly skewed dataset.
+
+From poi to this person
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Out of 86 people the mean is 65.
+The range is 0 to 528, with a median of 35.
+This would be a skewed dataset.
+
+From this person to poi
+~~~~~~~~~~~~~~~~~~~~~~~
+Out of 86 people the mean is 41 emails.
+The range is 0 to 609, with a median of 8.
+This is highly skewed.
+
+Shared receipt with poi
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Out of the 86 with email data the mean is 1176.
+The range is 2 to 5521, with a median of 741.
+This is skewed but the mean and median are higher.
+
+To messages
+~~~~~~~~~~~
+
+Out the email data the mean is 2074.
+The range is 57 to 15149, with a median of 1211.
+This is highly skewed.
+
+Financial variables
+-------------------
+
+Bonus
+~~~~~
+
+82 people have bonus information, with a mean of 2,374,235$.
+The range is 70,000$ to 97,343,620$.
+
+Deferral payments
+~~~~~~~~~~~~~~~~~
+
+39 people have this information, with a mean value of 1,642,674$.
+The range is -102,500$ to 32,083,400$.
+Unsure why this could be negative.
+
+Deferred income
+~~~~~~~~~~~~~~~
+
+49 people with a mean of -1,140,475$.
+The range is -27,992,890$ to -833$.
+This is a negative variable.
+
+Director fees
+~~~~~~~~~~~~~
+
+17 people have this information, with a mean of 166,804$.
+The range is 3285$ to 1,398,517$.
+
+Exercised stock options
+~~~~~~~~~~~~~~~~~~~~~~~
+
+102 people have information, with a mean of 5,987,054$.
+The range is 3285$ to 31,176,400$.
+
+Expenses
+~~~~~~~~
+
+95 people have this information, with a mean of 108,728$.
+The range is 148$ to 5,234,198$.
+
+Loan advances
+~~~~~~~~~~~~~
+
+Only four have this information.
+The mean on these four values is 41962500$.
+The range is 1,600,000$ to 83,925,000$.
+This is a low number of people but a very
+large amount of money.
+
+Long term incentive
+~~~~~~~~~~~~~~~~~~~
+
+66 people. Mean of 1470361$.
+The range is 69223$ to 48521930$.
+
+Other
+~~~~~
+
+93 people have this value. The mean is 919,065$
+The range is 2$ to 42,667,590$.
+
+Restricted stock
+~~~~~~~~~~~~~~~~
+
+110 have this value. The mean is 166,410$
+The range is 2,604,490$ to 130,322,300$
+
+Restricted stock deffered
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+18 have this value. The mean is 166,410$.
+The range is -7,576,788$ to 15456290$.
+
+Salary
+~~~~~~
+
+95 have salary information, the mean is 562,194$.
+The range is 477$ to 26704230$.
+The lowest salary seems a strange number for salary.
+
+Total payments
+~~~~~~~~~~~~~~
+
+125 have this value, with a mean of 5,081,526$.
+The minimum is 148$ and the maximum is 309,886,600$
+
+Total stock value
+~~~~~~~~~~~~~~~~~
+
+126 have information about total stock value.
+The mean is 6,773,857$. The range is -44,093$
+to 434,509,500$
+
+Summary
+~~~~~~~
+
+Some of the figures here are astonishing. The high figures
+and skewed distribution suggest a number of these datasets
+are over disperssed.
+
+Ther are also some suspicious low values like a the minimum
+salary.
+
 
 Results
 -------
