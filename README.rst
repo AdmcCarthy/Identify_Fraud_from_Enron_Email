@@ -65,6 +65,26 @@ in the dataset. This means the majority
 of poi do not their email inboxes within the Enron Email
 dataset.
 
+Financial dataset
+~~~~~~~~~~~~~~~~~
+
+The financial information is sourced from the Enron
+insiderpay pdf which is from Case No. 01-16034.
+
+There are POIs who have email information but do not
+have financial information.
+
+Non-POIs all come from the financial spreadsheet.
+
+Only POIs or non-POIs who have financial information are used
+as combining POIs without any financial information,
+i.e. they have all NaN values for financial data will
+cause issues with the machine learning process.
+
+An alternative approach would be to only use email
+information to be able to exapand the POI and non-POI
+dataset but that will not be taken further here.
+
 Enron Final Project dataset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
