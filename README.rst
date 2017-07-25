@@ -33,20 +33,22 @@ Using the default setting of one label and one feature we can take an intitial r
 
     features_list = ['poi', 'salary']
 
-The outputs for the initial algorithm (Gaussian Naive Bayes) is compared to two other algorithms.
+The outputs for the initial algorithm (Gaussian Naive Bayes) is compared to three other algorithms.
 
 .. csv-table:: Algorith comparisson
    :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
    :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 
    "GaussianNaiveBayes", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
-   "RandomForest", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
-   "AdaBoost", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
-   "SVC", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
-   "KMeans", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
-   "LogisticRegression", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "RandomForest", 0.705, 0.223, 0.191, 0.205, 0.197, 10000, 382, 1328, 1618, 6672
+   "AdaBoost", 0.719, 0.246, 0.196, 0.217, 0.204, 10000, 391, 1201, 1609, 6799
+   "KMeans", 0.738, 0.043, 0.013, 0.020, 0.015, 370, 1, 22, 75, 272
 
+Adaboost performs considerably slower.
 
+KMeans gives warning about predicted labels not equal to 0 or 1.
+
+Naive Bayes gives a very high recall valye (0.798).
 
 Questions
 ---------
