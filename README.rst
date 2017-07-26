@@ -184,6 +184,9 @@ Bonus
 82 people have bonus information, with a mean of 2,374,235$.
 The range is 70,000$ to 97,343,620$.
 
+.. image:: docs\images\Top_Bonuses.png
+   :scale: 100 %
+
 Deferral payments
 ~~~~~~~~~~~~~~~~~
 
@@ -255,6 +258,9 @@ Salary
 95 have salary information, the mean is 562,194$.
 The range is 477$ to 26704230$.
 The lowest salary seems a strange number for salary.
+
+.. image:: docs\images\Top_Salaries.png
+   :scale: 100 %
 
 Total payments
 ~~~~~~~~~~~~~~
