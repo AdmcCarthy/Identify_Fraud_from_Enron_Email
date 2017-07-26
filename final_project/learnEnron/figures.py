@@ -560,15 +560,12 @@ def qq_plot_var(data_a, data_b, name_a, name_b, ax_size=(7, 7), fit_zero=True):
     return ax
 
 
-def count_bar(data, name, color_set=custom, ax_size=(20, 6), funky=False, highlight=None, ax=None):
+def count_bar(data, name, color_set=custom_bw, ax_size=(20, 6), highlight=None, ax=None):
     """Make a univariate distribution
     of a variable.
 
     Returns an object to be plotted.
     """
-
-    if funky:
-        color_set = ToddTerje
 
     common_set_up(ax_size) # Apply basic plot style
 
