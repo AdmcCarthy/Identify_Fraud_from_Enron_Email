@@ -85,6 +85,12 @@ An alternative approach would be to only use email
 information to be able to exapand the POI and non-POI
 dataset but that will not be taken further here.
 
+There anomalous values in the dataset.
+
+One person value is TOTAL, which gives a sum of
+values, rather than relating to being a person.
+This is removed during the data processing pipeline.
+
 Enron Final Project dataset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
