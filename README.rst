@@ -138,6 +138,18 @@ see table below.
     "total_payments", 21
     "total_stock_value", 20
 
+The TOTAL key relates to an eroneous input, it is
+a an order of magnitude larger than other values. 
+It is the sum of all people in the dataset and is removed using:
+
+.. code-block:: python
+
+    data_dict.pop("TOTAL", None)
+
+Other large values have been checked and are
+associated to real people. See enron61702insiderpay.pdf
+for evidence.
+
 Email Variables
 ---------------
 
