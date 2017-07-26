@@ -567,11 +567,11 @@ def count_bar(data, name, color_set=custom_bw, ax_size=(20, 6), highlight=None, 
     Returns an object to be plotted.
     """
 
-    common_set_up(ax_size) # Apply basic plot style
+    common_set_up(ax_size)  # Apply basic plot style
 
     fig = sns.countplot(data, saturation=1, ax=ax,
-                       color=color_set[2], label=name,
-                      )
+                        color=color_set[2], label=name,
+                        )
 
     sns.despine(offset=2, trim=True, left=True, bottom=True)
 
@@ -580,20 +580,53 @@ def count_bar(data, name, color_set=custom_bw, ax_size=(20, 6), highlight=None, 
     font_colour = '#9099A2'
     if ax is None:
         fig.set_title('{0}'.format(name),
-                    fontsize=20, color=title_color)
+                      fontsize=20, color=title_color)
     fig.set_ylabel('Frequency',
                    color=font_colour)
     fig.set_xlabel('{0}'.format(name),
                    color=font_colour)
-    
+
     if highlight:
         bars = fig.patches
         bars[highlight].set_color(color_set[1])
-    
+
     return fig
 
 
-def univariate_overdispersed(x, univariate_name, transform='log_10', color_set=custom, bin_n='all_values', ax_size=(12, 6), funky=False, rug=False, formatting_right=True, x_truncation_upper=None, x_truncation_lower=None,  ax=None):
+def bar(variable, name, data=None, x_v=None, color_set=custom_bw, ax_size=(20, 6), highlight=None, ax=None):
+    """Make a univariate distribution
+    of a variable.
+
+    Returns an object to be plotted.
+    """
+
+    common_set_up(ax_size)  # Apply basic plot style
+
+    fig = sns.barplot(x=x_v, y=variable, data=data, saturation=1, ax=ax,
+                        color=color_set[2], label=name,
+                        )
+
+    sns.despine(offset=2, trim=True, left=True, bottom=True)
+
+    # Set title and axes
+    title_color = '#192231'
+    font_colour = '#9099A2'
+    if ax is None:
+        fig.set_title('{0}'.format(name),
+                      fontsize=20, color=title_color)
+    fig.set_ylabel('Frequency',
+                   color=font_colour)
+    fig.set_xlabel('{0}'.format(name),
+                   color=font_colour)
+
+    if highlight:
+        bars = fig.patches
+        bars[highlight].set_color(color_set[1])
+
+    return fig
+
+
+def univariate_overdispersed(x, univariate_name, transform='log_10', color_set=custom_bw, bin_n='all_values', ax_size=(12, 6), rug=False, formatting_right=True, x_truncation_upper=None, x_truncation_lower=None,  ax=None):
     """Retrun plot using data transformation to correct
     for overdispersed data.
     """
@@ -612,12 +645,12 @@ def univariate_overdispersed(x, univariate_name, transform='log_10', color_set=c
         x = x.apply(sq_rt)
         univariate_name = univariate_name + ' square root'
 
-    fig = univariate(x, univariate_name, color_set=custom, bin_n=bin_n, ax_size=ax_size, funky=funky, rug=rug, formatting_right=formatting_right, x_truncation_upper=x_truncation_upper, x_truncation_lower=x_truncation_lower, ax=ax)
+    fig = univariate(x, univariate_name, color_set=color_set, bin_n=bin_n, ax_size=ax_size, rug=rug, formatting_right=formatting_right, x_truncation_upper=x_truncation_upper, x_truncation_lower=x_truncation_lower, ax=ax)
 
     return fig
 
 
-def dist_transform_plot(x, univariate_name, fig_size=(18, 16), color_set=custom, bin_n='all_values', ax_size=(12, 6), funky=False, rug=True, formatting_right=True, x_truncation_upper=None, x_truncation_lower=None, ax=None):
+def dist_transform_plot(x, univariate_name, fig_size=(18, 16), color_set=custom_bw, bin_n='all_values', ax_size=(12, 6), funky=False, rug=True, formatting_right=True, x_truncation_upper=None, x_truncation_lower=None, ax=None):
     """Returns a plot including
     three individual plots alligned
     as three rows based on two data
