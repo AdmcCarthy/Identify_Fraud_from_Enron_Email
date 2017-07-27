@@ -314,9 +314,11 @@ The outputs for the initial algorithm (Gaussian Naive Bayes) is compared to thre
    :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 
    "GaussianNaiveBayes", 0.256, 0.185, 0.798, 0.300, 0.480, 10000, 1596, 7040, 404, 960
+   "DecisionTree", 0,692, 0.234, 0.242, 0.239, 0.240, 10000, 483, 1562, 1517, 6438
    "RandomForest", 0.705, 0.223, 0.191, 0.205, 0.197, 10000, 382, 1328, 1618, 6672
    "AdaBoost", 0.719, 0.246, 0.196, 0.217, 0.204, 10000, 391, 1201, 1609, 6799
    "KMeans", 0.738, 0.043, 0.013, 0.020, 0.015, 370, 1, 22, 75, 272
+
 
 Adaboost performs considerably slower.
 
