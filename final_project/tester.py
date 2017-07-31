@@ -12,8 +12,8 @@
 
 from __future__ import print_function
 import pickle
-import time
-from sklearn import model_selection
+from time import time
+from sklearn import model_selection, cross_validation
 from learnEnron import feature_format
 
 PERF_FORMAT_STRING = "\
@@ -26,13 +26,14 @@ RESULTS_FORMAT_STRING = "\tTotal predictions: {:4d}\tTrue positives: {:4d}\tFals
 def test_classifier(clf, dataset, feature_list, folds=1000):
     data = feature_format.featureFormat(dataset, feature_list, sort_keys=True)
     labels, features = feature_format.targetFeatureSplit(data)
-    cv = model_selection.StratifiedShuffleSplit(labels, folds, random_state=42)
+    cv = cross_validation.StratifiedShuffleSplit(labels, folds, random_state=42)
 
     true_negatives = 0
     false_negatives = 0
     true_positives = 0
     false_positives = 0
-
+    
+    t0 = time()
     for train_idx, test_idx in cv:
         features_train = []
         features_test = []
@@ -46,14 +47,10 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
             labels_test.append(labels[jj])
 
         # fit the classifier using training set, and test on test set
-        t0 = time()
         clf.fit(features_train, labels_train)
-        print("training time:", round(time()-t0, 3), "s")
 
         # Make predictions using fitted classifier
-        t0 = time()
         predictions = clf.predict(features_test)
-        print("prediction time:", round(time()-t0, 3), "s")
 
         for prediction, truth in zip(predictions, labels_test):
             if prediction == 0 and truth == 0:
@@ -70,6 +67,7 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
                 print("Evaluating performance for processed predictions:")
                 break
 
+    print("time taken:", round(time()-t0, 3), "s")
     try:
         total_predictions = (
                             true_negatives +
