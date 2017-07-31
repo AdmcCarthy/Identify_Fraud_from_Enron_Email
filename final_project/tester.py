@@ -12,6 +12,7 @@
 
 from __future__ import print_function
 import pickle
+from time import time
 from sklearn import model_selection, cross_validation
 from learnEnron import feature_format
 
@@ -31,7 +32,8 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
     false_negatives = 0
     true_positives = 0
     false_positives = 0
-
+    
+    t0 = time()
     for train_idx, test_idx in cv:
         features_train = []
         features_test = []
@@ -65,6 +67,7 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
                 print("Evaluating performance for processed predictions:")
                 break
 
+    print("time taken:", round(time()-t0, 3), "s")
     try:
         total_predictions = (
                             true_negatives +
