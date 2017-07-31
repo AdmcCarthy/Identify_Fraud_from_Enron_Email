@@ -9,6 +9,11 @@ Identify Fraud from Enron Email
 Getting Started
 ---------------
 
+Following the biggest corporate scandal in American history
+can emails and finacial information be used to seperate and
+predict persons of interest. A hunt for those that may be
+related to criminal activities.
+
 To test results:
 
 .. code-block:: bash
@@ -274,6 +279,28 @@ The lowest salary seems a strange number for salary.
 .. image:: docs\images\Top_Salaries.png
    :scale: 100 %
 
+Salary can be compared to bonus as these are
+two variables that may be correlated.
+
+.. image:: docs\images\salary_bonus.png
+   :scale: 100 %
+
+The plot also splits the data into two sets
+to view how a linear regression model would
+behave. The data has a large spread with a
+couple of key outliers. These outliers mean
+that a linear model is only useful for the
+cluster of values associated with lower salary
+and smaller bonuses. The outliers drag the regression
+model, for example see the blue trend line.
+
+All outliers are interesting data points.
+High salary, high bonus pairs are the top
+paid in the company. While high bonus 
+moderate salary is a question why they
+have such high bonus.
+
+
 Total payments
 ~~~~~~~~~~~~~~
 
@@ -296,6 +323,61 @@ are over disperssed.
 
 Ther are also some suspicious low values like a the minimum
 salary.
+
+Feature selection
+-----------------
+
+Four ensemble or tree classifiers are run to investigate
+feature importance. This is using the entire dataset
+and all variable apart from email address and name of person.
+
+The prediction is for the target, POI.
+
+.. image:: docs\images\DT_feature_importance.png
+   :scale: 100 %
+
+.. image:: docs\images\RF_feature_importance.png
+   :scale: 100 %
+
+.. image:: docs\images\AB_feature_importance.png
+   :scale: 100 %
+
+.. image:: docs\images\GB_feature_importance.png
+   :scale: 100 %
+
+Exercised stock options is the most important
+feature in three of the classifiers.
+
+In AdaBoost the deffered income followed by bonus
+are the most important.
+
+Decision tree does not use many of the variables.
+
+Director fees is consitently of low (almost no) importance.
+
+Loan advances is of low importance but has minor
+impact.
+
+restricted_stock_deferred is either of no importance
+or of minor importance. Similary deferral_payments is
+of no to little importance.
+
+This gives four variables with very little importance,
+Director fees, loan advances, restricted stock deffered
+and defferal payments.
+
+A way to select these variables will be using
+a limit on importance. For example AdaBoost feature
+importance <0.02 will remove the weakest four
+variables.
+
+The moderate variables tend to change in importance
+between the different algorithms. For example
+from_poi_to_this_person. These variables may
+have potential to be combined in pairs or other combinations.
+This will reduce the total number of variables
+and potentially increase the signifance.
+
 
 
 Results
