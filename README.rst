@@ -378,7 +378,29 @@ have potential to be combined in pairs or other combinations.
 This will reduce the total number of variables
 and potentially increase the signifance.
 
+Feature engineeering
+--------------------
 
+Email data
+~~~~~~~~~~
+
+Within the email data there are five variables.
+
+.. image:: docs\images\email_poi.png
+   :scale: 100 %
+
+The bubble chart highlights all five variables by
+combining two in ratios along x and y. These ratios
+seem suitable candidates for feature engineering.
+
+One takes the ratio of emails from a POI compared to
+the total number of emails to that person.
+
+The second the ratio of emails to a POI compared to
+the total number of emails that person has sent.
+
+The idea being that this will highlight persons of
+interest better than the two variables seperately.
 
 Results
 -------
