@@ -35,11 +35,20 @@ def selection(dataset, feature_list, clf, cut_off=0.01):
 
     Parameters
     ----------
-    data
+    dataset = dict
+        Data is stored in a dict in this case.
+    feature_list = list
+        List of features to be used in featureFormat.
+    clf = sklearn clf object
+        Pre-specified classifer from sklearn that
+        is compatible with feature importance methods.
+    cut_off = float
+        0.01 set as default. Controls the cut off.
 
     Returns
     -------
-
+    fs_list = list
+        A new list of features after feature selection.
     """
 
     # Extract features and labels from dataset for local testing
