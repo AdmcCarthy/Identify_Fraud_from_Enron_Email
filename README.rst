@@ -97,7 +97,7 @@ values, rather than relating to being a person.
 This is removed during the data processing pipeline.
 
 Enron Final Project dataset
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The dataset created by Udacity is aggregated to contain email
 and finacial information.
@@ -369,7 +369,8 @@ and defferal payments.
 A way to select these variables will be using
 a limit on importance. For example AdaBoost feature
 importance <0.02 will remove the weakest four
-variables.
+variables. Upon implementation a default ratio of
+0.01 is used as the cut-off.
 
 The moderate variables tend to change in importance
 between the different algorithms. For example
@@ -401,6 +402,19 @@ the total number of emails that person has sent.
 
 The idea being that this will highlight persons of
 interest better than the two variables seperately.
+
+Feature Scaling
+---------------
+
+Feature scaling is often a requirement for effective machine learning.
+
+Exploratory data anlysis has shown that even after removing the
+extreme outlier, TOTAL, a number of the variables have over
+disperssed data.
+
+A robust scaler can be used for datasets with many outliers. This will
+use more robust estimates for central tendancy and dispersion before
+scaling the dataset.
 
 Results
 -------
@@ -542,3 +556,8 @@ Changed to:
     urllib.request.urlretrieve(url, filename="../enron_mail_20150507.tgz")
 
 I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, github repositories, etc.
+
+Resources used
+~~~~~~~~~~~~~~~
+
+`Pandas and sklearn scaling <https://stackoverflow.com/questions/24645153/pandas-dataframe-columns-scaling-with-sklearn>`_
