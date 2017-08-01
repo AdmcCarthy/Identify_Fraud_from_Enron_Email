@@ -484,12 +484,11 @@ No6
 Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance. [relevant rubric item: “usage of evaluation metrics”]
 
 
-Code issues and Python 2 to 3 changes
--------------------------------------
+Code issues and changes
+-----------------------
 
-^^^^^^^^^^^^^
 File Location
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 Kept getting errors about not being able to locate the file based off of the string in the original code.
 Changed to:
@@ -498,9 +497,8 @@ Changed to:
 
     f = os.path.abspath("final_project/final_project_dataset.pkl")
 
-^^^^^^
 Pickle
-^^^^^^
+~~~~~~
 
 Changed code in both poi_id.py and tester.py to fit with python 3 and pickle otherwise a TypeError is returned.
 Now has to include "rb" (read binary) and "wb" (write binary) instead of "r" and "w" respectively.
@@ -519,9 +517,9 @@ To:
     with open(f, "rb") as data_file:
         data_dict = pickle.load(data_file)
 
-^^^^^^^^^^^^^^^^^^
+
 Depreciation of CV
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 Code returns this warning.
 
@@ -529,32 +527,8 @@ Code returns this warning.
     ns are moved. Also note that the interface of the new CV iterators are different from that of this module. This module w
     ill be removed in 0.20.
 
-Changed to:
-
-.. code-block: python
-
-    cv = model_selection.StratifiedShuffleSplit(labels, folds, random_state=42)
-
-.. code-block: python
-
-    features_train, features_test, labels_train, labels_test = \
-    model_selection.train_test_split(features, labels,
-                                      test_size=0.3,
-                                      random_state=42)
-
-^^^^^^
-urllib
-^^^^^^
-
-urlib has been changed in python 3, needed within startup.py
-New code requires urllib.request module.
-
-Changed to:
-
-.. code-block: python
-
-    urllib.request.urlretrieve(url, filename="../enron_mail_20150507.tgz")
-
+This has not been corrected as the starter code iterates over the cross-validation objects
+and requires this.
 
 Resources used
 ~~~~~~~~~~~~~~~
