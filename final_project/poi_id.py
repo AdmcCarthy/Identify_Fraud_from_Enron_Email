@@ -10,13 +10,15 @@ from sklearn import (
                     )
 from tester import dump_classifier_and_data
 from learnEnron import (
-                        feature_format, 
+                        feature_format,
+                        feature_engineering, 
                         feature_selection
                         )
 
 ro = True  # Outlier selection
 fs = True  # Feature selection
 fe = True  # Feature engineering
+sc = True  # Feature scaling
 
 # Task 1: Select what features you'll use.
 # features_list is a list of strings, each of which is a feature name.
@@ -40,7 +42,9 @@ features_list = ['poi',
                  'shared_receipt_with_poi',
                  'to_messages',
                  'total_payments',
-                 'total_stock_value'
+                 'total_stock_value',
+                 "ratio_to_poi",
+                 "ratio_from_poi"
                  ]
 
 # Use os.path.abspath to access the file
@@ -57,7 +61,7 @@ if ro:
 
 # Feature engineering
 if fe:
-    pass
+    data_dict = feature_engineering.email_ratios(data_dict)
 
 # Feature selection
 if fs:
@@ -73,6 +77,8 @@ if fs:
     print(features_list)
 
 # Feature scaling
+if sc:
+    pass
 
 # Store to my_dataset for easy export below.
 my_dataset = data_dict
