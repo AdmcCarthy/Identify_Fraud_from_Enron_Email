@@ -555,9 +555,14 @@ Changed to:
 
     urllib.request.urlretrieve(url, filename="../enron_mail_20150507.tgz")
 
-I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, github repositories, etc.
 
 Resources used
 ~~~~~~~~~~~~~~~
+
+I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, github repositories, etc.
+
+`Sklearn API <http://scikit-learn.org/stable/modules/classes.html>`_
+
+`Sklearn feature scaling <http://scikit-learn.org/stable/modules/preprocessing.html#preprocessing-scaler>`_
 
 `Pandas and sklearn scaling <https://stackoverflow.com/questions/24645153/pandas-dataframe-columns-scaling-with-sklearn>`_
