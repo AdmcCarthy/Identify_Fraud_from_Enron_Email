@@ -420,6 +420,37 @@ A robust scaler can be used for datasets with many outliers. This will
 use more robust estimates for central tendancy and dispersion before
 scaling the dataset.
 
+Cross-validation and optimization
+--------------------------------- 
+
+To make a classifier that works well on new or unseen data
+cross validation aids the algorithm from overfitting on the
+training data.
+
+By splitting up the available data (e.g. only the training data)
+into seperate groups, these can be used to cross-validate the
+performance of a classifier.
+
+In sklearn one useful approach is GridSearchCV, which combines
+cross-validation and parameter optimization.
+
+Each classifer will have a range of parameters that are not
+learnt when the classifer is fitted to the data. Each of
+these are passed as arguments. These can have a large impact
+on the performance of the classifier and fundamentaly change
+how it approaches making predictions using this dataset.
+
+Parameter optimization can be undertaken manually, running
+different combinations of parameters to see which performs
+best but GridSearchCV will compare combinations of classifier
+parameters and see which performs the best during cross
+validation.
+
+The cross validation method can be selected, for this
+use case stratified K fold is used to maintain an even
+proportion of labels across the folds of data.
+
+
 Results
 -------
 
@@ -458,7 +489,7 @@ After completing a version of the machine learning pipeline including
 outlier removal, feature selection, feature engineering and feature scaling
 a gradient boosting classifier is used with GridSearchCv. This means that
 parameters can be optimized across cross-validations (in this run 2 folds
-using stratified k fold).
+using stratified k fold). The score to optimize on is F1 weighted.
 
 This evaluation uses a broad parameter grid.
 
@@ -477,13 +508,23 @@ This evaluation uses a broad parameter grid.
 This gives 18000 combinations to try in an exhaustive grid search.
 This is useful to get an overview of which parameter combinations
 perform well, however it comes at a computational cost. It takes
-a number of hours to fit the classifier.
+a number of hours to fit the classifier. This resulted in:
+
+Best classifier score: 0.894907227728 : 
+
+{'subsample': 0.8, 'n_estimators': 120, 'max_depth': 25, 
+'loss':'deviance', 'min_samples_split': 2, 'min_samples_leaf': 2, 
+'max_features': 'sqrt'}
+
+When applying this method using the testing function.
 
 .. csv-table:: Algorith comparisson
    :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
    :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 
    "Gradient Boosting", 0.738, 0.043, 0.013, 0.020, 0.015, 370, 1, 22, 75, 272
+
+
 
 Questions
 ---------
