@@ -540,3 +540,5 @@ I hereby confirm that this submission is my work. I have cited above the origins
 `Sklearn feature scaling <http://scikit-learn.org/stable/modules/preprocessing.html#preprocessing-scaler>`_
 
 `Pandas and sklearn scaling <https://stackoverflow.com/questions/24645153/pandas-dataframe-columns-scaling-with-sklearn>`_
+
+`Random forest parameter range suggestion <http://blog.kaggle.com/2016/07/21/approaching-almost-any-machine-learning-problem-abhishek-thakur/>`_
