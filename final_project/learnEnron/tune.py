@@ -63,13 +63,13 @@ def param_optimize(features, labels, clf, grid_search=True):
     # search of all parameters.
     if grid_search is not True:
         parameters = [{
-                       'subsample': 0.8,
-                       'n_estimators': 120,
-                       'max_depth': 25,
-                       'loss': 'deviance',
-                       'min_samples_split': 2,
-                       'min_samples_leaf': 2,
-                       'max_features': 'sqrt'
+                       'subsample': [0.8],
+                       'n_estimators': [120],
+                       'max_depth': [25],
+                       'loss': ['deviance'],
+                       'min_samples_split': [2],
+                       'min_samples_leaf': [2],
+                       'max_features': ['sqrt']
                        }]
 
     clf = GridSearchCV(
