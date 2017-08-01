@@ -41,7 +41,6 @@ def email_ratios(datadict):
     # to have columns as variables
     df = pd.DataFrame(datadict)
     df = df.replace('NaN', np.NaN)
-
     df = df.transpose()
 
     df["ratio_to_poi"] = (
@@ -53,6 +52,7 @@ def email_ratios(datadict):
                             /df["to_messages"].dropna()
                             )
 
+    # Replace NaNs with zeros to so the pipeline works
     df = df.replace(np.NaN, 0)
 
     # Tranpose back before convertin back to a
