@@ -403,6 +403,10 @@ the total number of emails that person has sent.
 The idea being that this will highlight persons of
 interest better than the two variables seperately.
 
+When using these ratios the input variables will
+be removed. So from_messages, to_messages, from_poi_to_this_person
+and from_this_person_to_poi are not used when using feature engineering.
+
 Feature Scaling
 ---------------
 
@@ -418,6 +422,9 @@ scaling the dataset.
 
 Results
 -------
+
+Default setting
+~~~~~~~~~~~~~~~
 
 Using the default setting of one label and one feature we can take an intitial review. of the prediction.
 
@@ -442,7 +449,41 @@ Adaboost performs considerably slower.
 
 KMeans gives warning about predicted labels not equal to 0 or 1.
 
-Naive Bayes gives a very high recall valye (0.798).
+Naive Bayes gives a very high recall value (0.798).
+
+Gradient Boosting Classifer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After completing a version of the machine learning pipeline including
+outlier removal, feature selection, feature engineering and feature scaling
+a gradient boosting classifier is used with GridSearchCv. This means that
+parameters can be optimized across cross-validations (in this run 2 folds
+using stratified k fold).
+
+This evaluation uses a broad parameter grid.
+
+.. code-block:: Pythoon
+
+    parameters = [{
+                   "loss": ["deviance", "exponential"],
+                   "n_estimators": [120, 300, 500, 800, 1200],
+                   "max_depth": [3, 5, 7, 9, 12, 15, 17, 25],
+                   "min_samples_split": [2, 5, 10, 15, 100],
+                   "min_samples_leaf": [2, 5, 10],
+                   "subsample": [0.6, 0.7, 0.8, 0.9, 1],
+                   "max_features": ["sqrt", "log2", None]
+                   }]
+
+This gives 18000 combinations to try in an exhaustive grid search.
+This is useful to get an overview of which parameter combinations
+perform well, however it comes at a computational cost. It takes
+a number of hours to fit the classifier.
+
+.. csv-table:: Algorith comparisson
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+
+   "Gradient Boosting", 0.738, 0.043, 0.013, 0.020, 0.015, 370, 1, 22, 75, 272
 
 Questions
 ---------
