@@ -491,9 +491,13 @@ a gradient boosting classifier is used with GridSearchCv. This means that
 parameters can be optimized across cross-validations (in this run 2 folds
 using stratified k fold). The score to optimize on is F1 weighted.
 
+This is not removing any zeros, and using all features as input
+apart from email address and those that duplicate ratio feature
+engineering.
+
 This evaluation uses a broad parameter grid.
 
-.. code-block:: Pythoon
+.. code-block:: Python
 
     parameters = [{
                    "loss": ["deviance", "exponential"],
@@ -516,15 +520,51 @@ Best classifier score: 0.894907227728 :
 'loss':'deviance', 'min_samples_split': 2, 'min_samples_leaf': 2, 
 'max_features': 'sqrt'}
 
-When applying this method using the testing function.
+When applying this method using the testing function the results are:
 
 .. csv-table:: Algorith comparisson
    :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
    :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 
-   "Gradient Boosting", 0.738, 0.043, 0.013, 0.020, 0.015, 370, 1, 22, 75, 272
+   "Gradient Boosting", 0.862, 0.454, 0.186, 0.264, 0.211, 15000, 373, 448, 1627, 12552
+
+This method has improved on the origional methods but stil does not achieve
+0.3 for precesion and recall.
+
+The 0.45 for precesion compared to the 0.19 for recall suggests.....
+
+Further feature optimization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Removing features with a high number of NaNs includes dropping,
+restricted_stock_deferred, loan_advances, director_fees, deferral_payments,
+and deferred_income. These variables have over 100 missing values (apart from
+deferred_income with 97). The current features passing feature selection are
+shown here:
+
+['poi', 'deferred_income', 
+'exercised_stock_options', 'expenses', 
+'long_term_incentive', 'other', 
+'restricted_stock', 'salary',
+'shared_receipt_with_poi', '
+total_payments', 'total_stock_value', 
+'ratio_to_poi', 'ratio_from_poi']
+
+Of these only deferred_income is currently passing through
+the feature selection process. Note that bonus has also been
+dropped. It is suspected that bonus is dropped as it
+is correlated to a number of other variables, seen in the
+pair plot during EDA.
+
+Increasing the cut-off to 0.03 drops total_stock_value 
+and shared_receipt_with_poi. This does not improve the results
+using the current classifier.
+
+The current classifer is likely overfitting the dataset
+and is giving more precision than recall.
 
 
+~~~~~~~
 
 Questions
 ---------
@@ -575,7 +615,7 @@ File Location
 Kept getting errors about not being able to locate the file based off of the string in the original code.
 Changed to:
 
-.. code-block:: Pythoon
+.. code-block:: Python
 
     f = os.path.abspath("final_project/final_project_dataset.pkl")
 
