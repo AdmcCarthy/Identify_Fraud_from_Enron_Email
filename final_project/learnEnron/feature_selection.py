@@ -70,4 +70,7 @@ def selection(dataset, feature_list, clf, cut_off=0.01):
     # Convert the feature names back into a list.
     fs_list = df_f.iloc[:, 0].tolist()
 
+    # Add poi back to the start of the new list.
+    fs_list = ["poi"] + fs_list
+
     return fs_list

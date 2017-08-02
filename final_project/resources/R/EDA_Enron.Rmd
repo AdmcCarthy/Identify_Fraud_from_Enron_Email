@@ -358,7 +358,7 @@ ggplot(aes(x = enron$shared_receipt_with_poi, y = enron$to_messages),
 The
 
 ```{r echo=FALSE, scatter2, fig.height = 5, fig.width = 5}
-ggplot(aes(x = enron$from_messages, y = enron$to_messages),
+ggplot(aes(x = enron$from_messages, y = enron$from_this_person_to_poi),
        data = enron) +
   geom_point(alpha = 0.2,
              position = position_jitter(),
@@ -366,8 +366,8 @@ ggplot(aes(x = enron$from_messages, y = enron$to_messages),
   theme_tufte() +
   labs(
     title = "Density vs Fixed Acidity",
-    x = "Shared receipt with poi",
-    y = "To messages"
+    x = "from message",
+    y = "from this person to poi"
     ) +
   geom_smooth(method = 'lm', formula = y~x,
               colour = '#192231')
@@ -389,6 +389,67 @@ plt_mv7 <- ggplot(aes(x = log10(enron$from_this_person_to_poi/enron$from_message
     y = "to messages/from poi to this person"
     )
 fnl_plt_4 <- plt_mv7 + geom_point(aes(size = enron$shared_receipt_with_poi), 
+                                  pch = 21, 
+                                  show.legend = T,
+                                  alpha = 0.5) + 
+  aes(fill = factor(poi)) + geom_text(
+    aes(label = name),
+    hjust = 0, 
+    nudge_x = 0.03,
+    colour = "#9099A2",
+    check_overlap = TRUE,
+    size = 3
+    )
+fnl_plt_4
+```
+
+The plot uses ratios of email variables to highlight the persons of interest
+and how they vary from non-persons of interest.
+
+```{r echo=FALSE, Multivariate_Plots_8, fig.height = 6, fig.width = 9}
+plt_mv7 <- ggplot(aes(x = log10(enron$total_payments/enron$bonus),
+                  y = (enron$salary)),
+       data = enron) +
+  geom_point(alpha = 0.01,
+             position = position_jitter()
+             ) +
+  theme_tufte() +
+  labs(
+    title = "Attempting to seperate persons of interest in financial data",
+    x = "log10 total payments / bonus",
+    y = "salary $"
+    )
+fnl_plt_4 <- plt_mv7 + geom_point(aes(size = sqrt(enron$exercised_stock_options)), 
+                                  pch = 21, 
+                                  show.legend = T,
+                                  alpha = 0.5) + 
+  aes(fill = factor(poi)) + geom_text(
+    aes(label = name),
+    hjust = 0, 
+    nudge_x = 0.03,
+    colour = "#9099A2",
+    check_overlap = TRUE,
+    size = 3
+    )
+fnl_plt_4
+```
+
+The
+
+```{r echo=FALSE, Multivariate_Plots_8, fig.height = 6, fig.width = 9}
+plt_mv7 <- ggplot(aes(x = log10(enron$/enron$bonus),
+                  y = (enron$salary)),
+       data = enron) +
+  geom_point(alpha = 0.01,
+             position = position_jitter()
+             ) +
+  theme_tufte() +
+  labs(
+    title = "Attempting to seperate persons of interest in financial data",
+    x = "log10 total payments / bonus",
+    y = "salary $"
+    )
+fnl_plt_4 <- plt_mv7 + geom_point(aes(size = sqrt(enron$exercised_stock_options)), 
                                   pch = 21, 
                                   show.legend = T,
                                   alpha = 0.5) + 

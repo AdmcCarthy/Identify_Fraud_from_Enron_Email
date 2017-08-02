@@ -97,7 +97,7 @@ values, rather than relating to being a person.
 This is removed during the data processing pipeline.
 
 Enron Final Project dataset
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The dataset created by Udacity is aggregated to contain email
 and finacial information.
@@ -146,10 +146,6 @@ see table below.
 The TOTAL key relates to an eroneous input, it is
 a an order of magnitude larger than other values. 
 It is the sum of all people in the dataset and is removed using:
-
-.. code-block:: python
-
-    data_dict.pop("TOTAL", None)
 
 Other large values have been checked and are
 associated to real people. See enron61702insiderpay.pdf
@@ -324,6 +320,24 @@ are over disperssed.
 Ther are also some suspicious low values like a the minimum
 salary.
 
+Outlier removal
+---------------
+
+TOTAL is removed as this is a sum of all people.
+
+THE TRAVEL AGENCY IN THE PARK is removed as this is not a valid person.
+
+These are removed from the dataset at the start of the data processing
+pipeline.
+
+.. code-block:: Python
+
+    if ro:
+        data_dict.pop("TOTAL", None)
+        data_dict.pop("THE TRAVEL AGENCY IN THE PARK", None)
+
+It can be turned off by setting ro to FALSE.
+
 Feature selection
 -----------------
 
@@ -369,7 +383,8 @@ and defferal payments.
 A way to select these variables will be using
 a limit on importance. For example AdaBoost feature
 importance <0.02 will remove the weakest four
-variables.
+variables. Upon implementation a default ratio of
+0.01 is used as the cut-off.
 
 The moderate variables tend to change in importance
 between the different algorithms. For example
@@ -402,8 +417,59 @@ the total number of emails that person has sent.
 The idea being that this will highlight persons of
 interest better than the two variables seperately.
 
-Results
--------
+When using these ratios the input variables will
+be removed. So from_messages, to_messages, from_poi_to_this_person
+and from_this_person_to_poi are not used when using feature engineering.
+
+Feature Scaling
+---------------
+
+Feature scaling is often a requirement for effective machine learning.
+
+Exploratory data anlysis has shown that even after removing the
+extreme outlier, TOTAL, a number of the variables have over
+disperssed data.
+
+A robust scaler can be used for datasets with many outliers. This will
+use more robust estimates for central tendancy and dispersion before
+scaling the dataset.
+
+Cross-validation and optimization
+--------------------------------- 
+
+To make a classifier that works well on new or unseen data
+cross validation aids the algorithm from overfitting on the
+training data.
+
+By splitting up the available data (e.g. only the training data)
+into seperate groups, these can be used to cross-validate the
+performance of a classifier.
+
+In sklearn one useful approach is GridSearchCV, which combines
+cross-validation and parameter optimization.
+
+Each classifer will have a range of parameters that are not
+learnt when the classifer is fitted to the data. Each of
+these are passed as arguments. These can have a large impact
+on the performance of the classifier and fundamentaly change
+how it approaches making predictions using this dataset.
+
+Parameter optimization can be undertaken manually, running
+different combinations of parameters to see which performs
+best but GridSearchCV will compare combinations of classifier
+parameters and see which performs the best during cross
+validation.
+
+The cross validation method can be selected, for this
+use case stratified K fold is used to maintain an even
+proportion of labels across the folds of data.
+
+
+Testing classifiers
+-------------------
+
+Default setting
+~~~~~~~~~~~~~~~
 
 Using the default setting of one label and one feature we can take an intitial review. of the prediction.
 
@@ -428,7 +494,144 @@ Adaboost performs considerably slower.
 
 KMeans gives warning about predicted labels not equal to 0 or 1.
 
-Naive Bayes gives a very high recall valye (0.798).
+Naive Bayes gives a very high recall value (0.798).
+
+Gradient Boosting Classifer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After completing a version of the machine learning pipeline including
+outlier removal, feature selection, feature engineering and feature scaling
+a gradient boosting classifier is used with GridSearchCv. This means that
+parameters can be optimized across cross-validations (in this run 2 folds
+using stratified k fold). The score to optimize on is F1 weighted.
+
+This is not removing any zeros, and using all features as input
+apart from email address and those that duplicate ratio feature
+engineering.
+
+This evaluation uses a broad parameter grid.
+
+.. code-block:: Python
+
+    parameters = [{
+                   "loss": ["deviance", "exponential"],
+                   "n_estimators": [120, 300, 500, 800, 1200],
+                   "max_depth": [3, 5, 7, 9, 12, 15, 17, 25],
+                   "min_samples_split": [2, 5, 10, 15, 100],
+                   "min_samples_leaf": [2, 5, 10],
+                   "subsample": [0.6, 0.7, 0.8, 0.9, 1],
+                   "max_features": ["sqrt", "log2", None]
+                   }]
+
+This gives 18000 combinations to try in an exhaustive grid search.
+This is useful to get an overview of which parameter combinations
+perform well, however it comes at a computational cost. It takes
+a number of hours to fit the classifier. This resulted in:
+
+Best classifier score: 0.894907227728 : 
+
+{'subsample': 0.8, 'n_estimators': 120, 'max_depth': 25, 
+'loss':'deviance', 'min_samples_split': 2, 'min_samples_leaf': 2, 
+'max_features': 'sqrt'}
+
+When applying this method using the testing function the results are:
+
+.. csv-table:: Algorith comparisson
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+
+   "Gradient Boosting", 0.862, 0.454, 0.186, 0.264, 0.211, 15000, 373, 448, 1627, 12552
+
+This method has improved on the origional methods but stil does not achieve
+0.3 for precesion and recall.
+
+The 0.45 for precesion compared to the 0.19 for recall suggests.....
+
+Further feature optimization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Removing features with a high number of NaNs includes dropping,
+restricted_stock_deferred, loan_advances, director_fees, deferral_payments,
+and deferred_income. These variables have over 100 missing values (apart from
+deferred_income with 97). The current features passing feature selection are
+shown here:
+
+['poi', 'deferred_income', 
+'exercised_stock_options', 'expenses', 
+'long_term_incentive', 'other', 
+'restricted_stock', 'salary',
+'shared_receipt_with_poi', '
+total_payments', 'total_stock_value', 
+'ratio_to_poi', 'ratio_from_poi']
+
+Of these only deferred_income is currently passing through
+the feature selection process. Note that bonus has also been
+dropped. It is suspected that bonus is dropped as it
+is correlated to a number of other variables, seen in the
+pair plot during EDA.
+
+Increasing the cut-off to 0.03 drops total_stock_value 
+and shared_receipt_with_poi. This does not improve the results
+using the current classifier.
+
+The current classifer is likely overfitting the dataset
+and is giving more precision than recall.
+
+Logistic Regression
+~~~~~~~~~~~~~~~~~~~
+
+Using a cut off of 0.03.
+
+.. csv-table:: Algorith comparisson
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+
+   "Logistic Regression", 0.85, 0.368, 0.177, 0.239, 0.197, 15000, 354, 609, 1646, 12391
+
+Similar problems occur as when using the previous classifier with a higher precision than recall.
+
+Futher approaches like PCA and more advanced feature selection can be undertaken to see if this
+improves performace.
+
+Pipeline - Anova Feature Selection > PCA > Logistic Regression
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To expand the classifer sklearns pipeline module can be used to expand
+the number of steps within the classifer. The main purpose of this is
+to allow grid search cv to explore different combinations automatically
+rather than perfoming manual adjustments.
+
+Feature selction will select fixed number of components based on
+a classification ANOVA (Analysis of variance) statistical test.
+The grid search can iterate over different numbers of components (k)
+to explore which number of features removed works best.
+
+Principal component analysis can reduce the dimensionality of the dataset
+and reduce the number of features used for machine learning further.
+This is beneficial in this case as there are few training data points
+and a high variance to the results. The standard PCA method will be applied
+with the number of components being iterated through the grid search.
+
+The plan is to get better performance by reducing the number of features used
+in a machine learning algorithm like logistic regresssion. The results are:
+
+Best classifier score: 0.847349475383 : {'r_dim__n_components': 2, 'r_dim__whiten': True, 'clf__C': 0.1, 'anova__k': 8, 'clf__class_weight': 'balanced'}
+
+.. csv-table:: Algorith comparisson
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+
+   "Logistic Regression", 0.80, 0.315, 0.392, 0.349, 0.374, 15000, 784, 1705, 1216, 11295
+
+
+This just achieves the goal of being above 0.3 for precision and recall.
+Note that the method uses just 2 components of data based on only 8 feautures.
+This suggests that the pipeline approach is a good approach for this problem.
+
+Pipeline - Anova Feature Selection > PCA > Gradient Boosting
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Can a different method achieve an even higher score.
 
 Questions
 ---------
@@ -470,23 +673,21 @@ No6
 Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance. [relevant rubric item: “usage of evaluation metrics”]
 
 
-Code issues and Python 2 to 3 changes
--------------------------------------
+Code issues and changes
+-----------------------
 
-^^^^^^^^^^^^^
 File Location
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 Kept getting errors about not being able to locate the file based off of the string in the original code.
 Changed to:
 
-.. code-block:: Pythoon
+.. code-block:: Python
 
     f = os.path.abspath("final_project/final_project_dataset.pkl")
 
-^^^^^^
 Pickle
-^^^^^^
+~~~~~~
 
 Changed code in both poi_id.py and tester.py to fit with python 3 and pickle otherwise a TypeError is returned.
 Now has to include "rb" (read binary) and "wb" (write binary) instead of "r" and "w" respectively.
@@ -505,9 +706,9 @@ To:
     with open(f, "rb") as data_file:
         data_dict = pickle.load(data_file)
 
-^^^^^^^^^^^^^^^^^^
+
 Depreciation of CV
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 Code returns this warning.
 
@@ -515,30 +716,26 @@ Code returns this warning.
     ns are moved. Also note that the interface of the new CV iterators are different from that of this module. This module w
     ill be removed in 0.20.
 
-Changed to:
+This has not been corrected as the starter code iterates over the cross-validation objects
+and requires this.
 
-.. code-block: python
-
-    cv = model_selection.StratifiedShuffleSplit(labels, folds, random_state=42)
-
-.. code-block: python
-
-    features_train, features_test, labels_train, labels_test = \
-    model_selection.train_test_split(features, labels,
-                                      test_size=0.3,
-                                      random_state=42)
-
-^^^^^^
-urllib
-^^^^^^
-
-urlib has been changed in python 3, needed within startup.py
-New code requires urllib.request module.
-
-Changed to:
-
-.. code-block: python
-
-    urllib.request.urlretrieve(url, filename="../enron_mail_20150507.tgz")
+Resources used
+~~~~~~~~~~~~~~~
 
 I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, github repositories, etc.
+
+`Sklearn API <http://scikit-learn.org/stable/modules/classes.html>`_
+
+`Sklearn feature scaling <http://scikit-learn.org/stable/modules/preprocessing.html#preprocessing-scaler>`_
+
+`Pandas and sklearn scaling <https://stackoverflow.com/questions/24645153/pandas-dataframe-columns-scaling-with-sklearn>`_
+
+`Random forest parameter range suggestion <http://blog.kaggle.com/2016/07/21/approaching-almost-any-machine-learning-problem-abhishek-thakur/>`_
+
+`Sklearn pipeline <http://scikit-learn.org/stable/modules/pipeline.html>`_
+
+`Sklearn pipeline ANOVA feature selection <http://scikit-learn.org/stable/auto_examples/feature_selection/feature_selection_pipeline.html#sphx-glr-auto-examples-feature-selection-feature-selection-pipeline-py>`_
+
+`Sklearn pipeline chaining PCA and logistic regression <http://scikit-learn.org/stable/auto_examples/plot_digits_pipe.html#sphx-glr-auto-examples-plot-digits-pipe-py>`_
+
+`Univariate feature selection Sklearn <http://scikit-learn.org/stable/modules/feature_selection.html#univariate-feature-selection>`_
