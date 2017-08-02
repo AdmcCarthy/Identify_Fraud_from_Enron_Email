@@ -588,6 +588,51 @@ Using a cut off of 0.03.
 
    "Logistic Regression", 0.85, 0.368, 0.177, 0.239, 0.197, 15000, 354, 609, 1646, 12391
 
+Similar problems occur as when using the previous classifier with a higher precision than recall.
+
+Futher approaches like PCA and more advanced feature selection can be undertaken to see if this
+improves performace.
+
+Pipeline - Anova Feature Selection > PCA > Logistic Regression
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To expand the classifer sklearns pipeline module can be used to expand
+the number of steps within the classifer. The main purpose of this is
+to allow grid search cv to explore different combinations automatically
+rather than perfoming manual adjustments.
+
+Feature selction will select fixed number of components based on
+a classification ANOVA (Analysis of variance) statistical test.
+The grid search can iterate over different numbers of components (k)
+to explore which number of features removed works best.
+
+Principal component analysis can reduce the dimensionality of the dataset
+and reduce the number of features used for machine learning further.
+This is beneficial in this case as there are few training data points
+and a high variance to the results. The standard PCA method will be applied
+with the number of components being iterated through the grid search.
+
+The plan is to get better performance by reducing the number of features used
+in a machine learning algorithm like logistic regresssion. The results are:
+
+Best classifier score: 0.847349475383 : {'r_dim__n_components': 2, 'r_dim__whiten': True, 'clf__C': 0.1, 'anova__k': 8, 'clf__class_weight': 'balanced'}
+
+.. csv-table:: Algorith comparisson
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+
+   "Logistic Regression", 0.80, 0.315, 0.392, 0.349, 0.374, 15000, 784, 1705, 1216, 11295
+
+
+This just achieves the goal of being above 0.3 for precision and recall.
+Note that the method uses just 2 components of data based on only 8 feautures.
+This suggests that the pipeline approach is a good approach for this problem.
+
+Pipeline - Anova Feature Selection > PCA > Gradient Boosting
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Can a different method achieve an even higher score.
+
 Questions
 ---------
 
@@ -692,3 +737,5 @@ I hereby confirm that this submission is my work. I have cited above the origins
 `Sklearn pipeline ANOVA feature selection <http://scikit-learn.org/stable/auto_examples/feature_selection/feature_selection_pipeline.html#sphx-glr-auto-examples-feature-selection-feature-selection-pipeline-py>`_
 
 `Sklearn pipeline chaining PCA and logistic regression <http://scikit-learn.org/stable/auto_examples/plot_digits_pipe.html#sphx-glr-auto-examples-plot-digits-pipe-py>`_
+
+`Univariate feature selection Sklearn <http://scikit-learn.org/stable/modules/feature_selection.html#univariate-feature-selection>`_
