@@ -465,8 +465,8 @@ use case stratified K fold is used to maintain an even
 proportion of labels across the folds of data.
 
 
-Results
--------
+Testing classifiers
+-------------------
 
 Default setting
 ~~~~~~~~~~~~~~~
@@ -580,6 +580,14 @@ and is giving more precision than recall.
 Logistic Regression
 ~~~~~~~~~~~~~~~~~~~
 
+Using a cut off of 0.03.
+
+.. csv-table:: Algorith comparisson
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+
+   "Logistic Regression", 0.85, 0.368, 0.177, 0.239, 0.197, 15000, 354, 609, 1646, 12391
+
 Questions
 ---------
 
@@ -678,3 +686,9 @@ I hereby confirm that this submission is my work. I have cited above the origins
 `Pandas and sklearn scaling <https://stackoverflow.com/questions/24645153/pandas-dataframe-columns-scaling-with-sklearn>`_
 
 `Random forest parameter range suggestion <http://blog.kaggle.com/2016/07/21/approaching-almost-any-machine-learning-problem-abhishek-thakur/>`_
+
+`Sklearn pipeline <http://scikit-learn.org/stable/modules/pipeline.html>`_
+
+`Sklearn pipeline ANOVA feature selection <http://scikit-learn.org/stable/auto_examples/feature_selection/feature_selection_pipeline.html#sphx-glr-auto-examples-feature-selection-feature-selection-pipeline-py>`_
+
+`Sklearn pipeline chaining PCA and logistic regression <http://scikit-learn.org/stable/auto_examples/plot_digits_pipe.html#sphx-glr-auto-examples-plot-digits-pipe-py>`_
