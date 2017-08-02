@@ -147,10 +147,6 @@ The TOTAL key relates to an eroneous input, it is
 a an order of magnitude larger than other values. 
 It is the sum of all people in the dataset and is removed using:
 
-.. code-block:: python
-
-    data_dict.pop("TOTAL", None)
-
 Other large values have been checked and are
 associated to real people. See enron61702insiderpay.pdf
 for evidence.
@@ -323,6 +319,24 @@ are over disperssed.
 
 Ther are also some suspicious low values like a the minimum
 salary.
+
+Outlier removal
+---------------
+
+TOTAL is removed as this is a sum of all people.
+
+THE TRAVEL AGENCY IN THE PARK is removed as this is not a valid person.
+
+These are removed from the dataset at the start of the data processing
+pipeline.
+
+.. code-block:: Python
+
+    if ro:
+        data_dict.pop("TOTAL", None)
+        data_dict.pop("THE TRAVEL AGENCY IN THE PARK", None)
+
+It can be turned off by setting ro to FALSE.
 
 Feature selection
 -----------------
@@ -563,8 +577,8 @@ using the current classifier.
 The current classifer is likely overfitting the dataset
 and is giving more precision than recall.
 
-
-~~~~~~~
+Logistic Regression
+~~~~~~~~~~~~~~~~~~~
 
 Questions
 ---------
