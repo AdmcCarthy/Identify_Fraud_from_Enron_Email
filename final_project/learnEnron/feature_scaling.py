@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import RobustScaler
 
+
 def scale(datadict, feature_list):
     """
     Scale features within the data dictionary.
@@ -42,7 +43,7 @@ def scale(datadict, feature_list):
 
     # Replace NaNs with zeros to so the pipeline works
     df = df.replace(np.NaN, 0)
-    a = (df['bonus'].mean())
+    a = df['exercised_stock_options'].mean()
 
     # Robust scaler due to outliers in data
     scl = RobustScaler()
@@ -51,8 +52,8 @@ def scale(datadict, feature_list):
     df[feature_list] = scl.fit_transform(df[feature_list])
 
     # Report results
-    b = (df['bonus'].mean())
-    print("Mean bonus changed from {0} to {0}".format(a, b))
+    b = df['exercised_stock_options'].mean()
+    print("Mean changed from {0} to {1}".format(a, b))
 
     # Tranpose back before convertin back to a
     # dictionary
