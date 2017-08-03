@@ -48,7 +48,7 @@ features_list = ['poi',
 
 # Use os.path.abspath to access the file
 file_dir = os.path.dirname(os.path.realpath(__file__))
-f = os.path.join(file_dir, "final_project_dataset.pkl")
+f = os.path.join(file_dir, "resources", "data", "final_project_dataset.pkl")
 
 # Changed to rb for python to read binary
 with open(f, "rb") as data_file:

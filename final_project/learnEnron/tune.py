@@ -285,16 +285,15 @@ def param_optimize_gb_pipe(features, labels, grid_search=True, folds=2):
     # Pipeline steps can be ignored by setting None.
 
     parameters = [{
-                   "anova__k": [6, 8, 10, 12, "all"],
+                   "anova__k": [6, 9, 11, "all"],
                    "r_dim__n_components": [2, 4],
                    "r_dim__whiten": [True, False],
-                   "clf__subsample": [0.8],
-                   "clf__n_estimators": [120],
-                   "clf__max_depth": [25],
-                   "clf__loss": ["deviance"],
-                   "clf__min_samples_split": [2],
-                   "clf__min_samples_leaf": [2],
-                   "clf__max_features": ["sqrt"]
+                   "clf__subsample": [0.6, 0.7, 0.9],
+                   "clf__n_estimators": [20, 300, 500],
+                   "clf__max_depth": [5, 10, 25],
+                   "clf__min_samples_split": [2, 5, 10],
+                   "clf__min_samples_leaf": [2, 5, 10],
+                   "clf__max_features": ["sqrt", "log2", None]
                    }]
 
     # Parameters based on best results from exhaustive grid
@@ -308,7 +307,7 @@ def param_optimize_gb_pipe(features, labels, grid_search=True, folds=2):
                        estimator=pipe,
                        param_grid=parameters,
                        cv=cv,
-                       scoring=score
+                       scoring=score,
                        )
 
     # Will take time...
