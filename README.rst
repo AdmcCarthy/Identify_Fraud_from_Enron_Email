@@ -692,29 +692,27 @@ The f1 score here is 0.35, with a higher recall than precision.
 This suggests that more POI are being found more accurately but there
 are still a significant proportion of POI who are not identified.
 
-Pipeline - Anova Feature Selection > PCA > Gradient Boosting
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Can a different method achieve an even higher score. Taking
-an exhaustive approach using gradient boosting gives 360,000 combinations.
-
-.. code-block:: Python
-
-    parameters = [{
-                   "anova__k": [6, 8, 10, 12, "all"],
-                   "r_dim__n_components": [2, 4],
-                   "r_dim__whiten": [True, False],
-                   "clf__subsample": [0.6, 0.7, 0.8, 0.9, 1],
-                   "clf__n_estimators": [20, 300, 500, 800, 1200],
-                   "clf__max_depth": [3, 5, 7, 9, 12, 15, 17, 25],
-                   "clf__loss": ["deviance", "exponential"],
-                   "clf__min_samples_split": [2, 5, 10, 15, 100],
-                   "clf__min_samples_leaf": [2, 5, 10],
-                   "clf__max_features": ["sqrt", "log2", None]
-                   }]
-
 Conclusions
 -----------
+
+The logistic regression combined with PCA and Anova feature selection 
+offers an estimator which gives above 0.3 for both Precision and Recall.
+This achieves the objective criteria. This is a balanced model.
+
+Other methods have been attempted. One which is documented is Gradient Boost
+which overfits the data giving a high precision (0.45) but poor recall, meaning
+that it is predicting too many cases to be a person of interest.
+
+Further work could be undertaken to improve this. Further optimization
+could be attempted using Logistic Regression and it´s parameters.
+
+New features could be generated from the email corpus. Highlighting
+key a word set (for example related to specific criminal activities
+like electric grid manipulation) which relates somehow to POI. This would expand the
+input variables to perhaps include information to improve performance.
+
+Overall this is a challenging case due to the limited size of the dataset
+and mixed missing values across different people.
 
 Code issues and changes
 -----------------------
