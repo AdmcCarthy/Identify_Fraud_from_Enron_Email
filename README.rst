@@ -10,9 +10,8 @@ Getting Started
 ---------------
 
 Following the biggest corporate scandal in American history
-can emails and finacial information be used to seperate and
-predict persons of interest. A hunt for those that may be
-related to criminal activities.
+can emails and finacial information be used to predict
+predict persons of interest in criminal investigations.
 
 To test results:
 
@@ -21,12 +20,44 @@ To test results:
     $ cd final_project
     $ tester.py
 
-To re-run:
+To re-run and make the classifier:
 
 .. code-block:: bash
 
     $ cd final_project
     $ poi_id.py
+
+Introduction
+------------
+
+The question and dataset are provided in Udacity´s introduction to
+machine learning. The question is to identify a label (person of interest)
+using a predictive model. To predict those in the Enron scandal who
+were under some form of investigation and deemed the title person of interest.
+
+Machine learning is used here to predict if a person is of interst or not
+based on a large number of variables. Machine learning can work through
+the high number of variables in ways that a human manually interpreting
+and assessing the data will not be able to achieve.
+
+.. image:: docs\images\Screen_Shot.png
+   :scale: 100 %
+
+Screen shot from udacity intro to machine learning course.
+
+This report will work through the stages of a machine learning
+investigation. It will begin by giving an overview of the dataset
+and some insights from exploratory data anlysis.
+
+It will then move onto to feature selection, scaling and engineering.
+
+It will discuss the approach taken to validate and tune the algorithm
+and which metrics area used to evaluate the quality of the model.
+
+Following this will be a review of the different approaches taken and there results.
+
+The objective is to find a methodology which can achieve 0.3 or greater in
+both precision and recall.
 
 Overview of data
 ----------------
@@ -56,7 +87,7 @@ Andrew Fastow was CFO.
 Email dataset
 ~~~~~~~~~~~~~
 
-The email dataset is from ` <https://www.cs.cmu.edu/~./enron/>`_
+The email dataset is from `here <https://www.cs.cmu.edu/~./enron/>`_
 
 Email dataset consists of 150 directories each reflecting a person,
 specified as lastname followed by first letter of first name.
@@ -154,39 +185,28 @@ for evidence.
 Email Variables
 ---------------
 
-From messages
+Email address
 ~~~~~~~~~~~~~
 
-Out of 86 people the mean number of messages from them is 609.
-The range is 12 to 14368, with a median of 41. 
-This suggests a highly skewed dataset.
+This is a string of the persons
+email address, it is not a useful
+variable for making a predictive
+model so is not included in the machine learning.
+
+From messages
+~~~~~~~~~~~~~
 
 From poi to this person
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Out of 86 people the mean is 65.
-The range is 0 to 528, with a median of 35.
-This would be a skewed dataset.
-
 From this person to poi
 ~~~~~~~~~~~~~~~~~~~~~~~
-Out of 86 people the mean is 41 emails.
-The range is 0 to 609, with a median of 8.
-This is highly skewed.
 
 Shared receipt with poi
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Out of the 86 with email data the mean is 1176.
-The range is 2 to 5521, with a median of 741.
-This is skewed but the mean and median are higher.
-
 To messages
 ~~~~~~~~~~~
-
-Out the email data the mean is 2074.
-The range is 57 to 15149, with a median of 1211.
-This is highly skewed.
 
 Financial variables
 -------------------
@@ -194,8 +214,8 @@ Financial variables
 Bonus
 ~~~~~
 
-82 people have bonus information, with a mean of 2,374,235$.
-The range is 70,000$ to 97,343,620$.
+Bonuses are highly skewed with top bonsuses being exceedingly
+high.
 
 .. image:: docs\images\Top_Bonuses.png
    :scale: 100 %
@@ -203,9 +223,7 @@ The range is 70,000$ to 97,343,620$.
 Deferral payments
 ~~~~~~~~~~~~~~~~~
 
-39 people have this information, with a mean value of 1,642,674$.
-The range is -102,500$ to 32,083,400$.
-Unsure why this could be negative.
+Only 39 people have this information.
 
 Deferred income
 ~~~~~~~~~~~~~~~
@@ -217,59 +235,49 @@ This is a negative variable.
 Director fees
 ~~~~~~~~~~~~~
 
-17 people have this information, with a mean of 166,804$.
-The range is 3285$ to 1,398,517$.
+17 people have this information, so this
+variable is rarely present.
 
 Exercised stock options
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-102 people have information, with a mean of 5,987,054$.
-The range is 3285$ to 31,176,400$.
+102 people have information.
 
 Expenses
 ~~~~~~~~
 
-95 people have this information, with a mean of 108,728$.
-The range is 148$ to 5,234,198$.
+95 people have this information.
 
 Loan advances
 ~~~~~~~~~~~~~
 
 Only four have this information.
-The mean on these four values is 41962500$.
-The range is 1,600,000$ to 83,925,000$.
-This is a low number of people but a very
-large amount of money.
 
 Long term incentive
 ~~~~~~~~~~~~~~~~~~~
 
-66 people. Mean of 1470361$.
-The range is 69223$ to 48521930$.
+66 people.
 
 Other
 ~~~~~
 
-93 people have this value. The mean is 919,065$
-The range is 2$ to 42,667,590$.
+93 people have this value.
 
 Restricted stock
 ~~~~~~~~~~~~~~~~
 
-110 have this value. The mean is 166,410$
-The range is 2,604,490$ to 130,322,300$
+110 have this value.
 
 Restricted stock deffered
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-18 have this value. The mean is 166,410$.
-The range is -7,576,788$ to 15456290$.
+18 have this value.
 
 Salary
 ~~~~~~
 
-95 have salary information, the mean is 562,194$.
-The range is 477$ to 26704230$.
+95 have salary information.
+The minimum is 477$.
 The lowest salary seems a strange number for salary.
 
 .. image:: docs\images\Top_Salaries.png
@@ -300,15 +308,12 @@ have such high bonus.
 Total payments
 ~~~~~~~~~~~~~~
 
-125 have this value, with a mean of 5,081,526$.
-The minimum is 148$ and the maximum is 309,886,600$
+125 have this value.
 
 Total stock value
 ~~~~~~~~~~~~~~~~~
 
 126 have information about total stock value.
-The mean is 6,773,857$. The range is -44,093$
-to 434,509,500$
 
 Summary
 ~~~~~~~
@@ -317,7 +322,7 @@ Some of the figures here are astonishing. The high figures
 and skewed distribution suggest a number of these datasets
 are over disperssed.
 
-Ther are also some suspicious low values like a the minimum
+There are also some suspicious low values like a the minimum
 salary.
 
 Outlier removal
@@ -396,9 +401,6 @@ and potentially increase the signifance.
 Feature engineeering
 --------------------
 
-Email data
-~~~~~~~~~~
-
 Within the email data there are five variables.
 
 .. image:: docs\images\email_poi.png
@@ -441,6 +443,12 @@ To make a classifier that works well on new or unseen data
 cross validation aids the algorithm from overfitting on the
 training data.
 
+Firstly the data is sperated into a train and test set using
+train test split, with 30% held back for testing. This gives
+29 people for testing and 65 people for training.
+
+This training data is the used further.
+
 By splitting up the available data (e.g. only the training data)
 into seperate groups, these can be used to cross-validate the
 performance of a classifier.
@@ -464,6 +472,43 @@ The cross validation method can be selected, for this
 use case stratified K fold is used to maintain an even
 proportion of labels across the folds of data.
 
+Note that when using 3 folds 65 persons become
+around 22 and 2 folds 32. This means this problem
+set is always workign with a very small dataset.
+Having a large number of variables will not be a good
+idea with such a small dataset.
+
+Evaluation metrics
+------------------
+
+This problem is a skewed binary classification, therefore accuracy is
+not the best metric to judge the reliability of the evaluation.
+
+There is an assymetry in this problem, we can optimize
+for placing more people as innocent
+or more people as guilty. Or aim for a balance between the two.
+
+    Recall: True Positive / (True Positive + False Negative). 
+    Out of all the items that are truly positive, how many were correctly classified as positive. Or simply, how many positive items were 'recalled' from the dataset.
+
+    Precision: True Positive / (True Positive + False Positive). 
+    Out of all the items labeled as positive, how many truly belong to the positive class.
+
+A high recall low precision model would give greater confidence that flagged POIs
+are truly POI but may miss out on POIs. This would be suitable if avoiding flagging
+innocent people is the most important issue.
+
+A high precision low recall model would find nearly all POIs but also flag others as
+involved when they are innocent. This would be useful if screening a large number
+of people to quickly decide who to focus on for further investigation.
+
+A high F1 score with balanced precision and recall is the best of both settings.
+
+The preference here is to achieve a respectable F1 score and recall but focus
+on precision. We can live with innocent people being flagged up as this model
+will give an overview of all those who may be POI. Further investigation
+could then check these predictions. This would work well as a screening tool
+to quickly evaluate a range of people.
 
 Testing classifiers
 -------------------
@@ -536,6 +581,7 @@ Best classifier score: 0.894907227728 :
 
 When applying this method using the testing function the results are:
 
+
 .. csv-table:: Algorith comparisson
    :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
    :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
@@ -545,7 +591,8 @@ When applying this method using the testing function the results are:
 This method has improved on the origional methods but stil does not achieve
 0.3 for precesion and recall.
 
-The 0.45 for precesion compared to the 0.19 for recall suggests.....
+The 0.45 for precesion compared to the 0.19 for recall suggests that
+it is finding nearly half the POIs but flagging to many non POIs as guilty.
 
 Further feature optimization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -580,7 +627,20 @@ and is giving more precision than recall.
 Logistic Regression
 ~~~~~~~~~~~~~~~~~~~
 
-Using a cut off of 0.03.
+Ensemble methods like gradient boosting can be prone to
+overfitting so trying a different model type may lead to
+different results.
+
+Instead of default this uses a cut of 0.03:
+
+.. code-block:: Python
+
+    features_list = feature_selection.selection(
+                                                 data_dict,
+                                                 features_list,
+                                                 clf_fs,
+                                                 cut_off=0.03
+                                                 )
 
 .. csv-table:: Algorith comparisson
    :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
@@ -628,50 +688,33 @@ This just achieves the goal of being above 0.3 for precision and recall.
 Note that the method uses just 2 components of data based on only 8 feautures.
 This suggests that the pipeline approach is a good approach for this problem.
 
+The f1 score here is 0.35, with a higher recall than precision.
+This suggests that more POI are being found more accurately but there
+are still a significant proportion of POI who are not identified.
+
 Pipeline - Anova Feature Selection > PCA > Gradient Boosting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Can a different method achieve an even higher score.
+Can a different method achieve an even higher score. Taking
+an exhaustive approach using gradient boosting gives 360,000 combinations.
 
-Questions
----------
+.. code-block:: Python
 
+    parameters = [{
+                   "anova__k": [6, 8, 10, 12, "all"],
+                   "r_dim__n_components": [2, 4],
+                   "r_dim__whiten": [True, False],
+                   "clf__subsample": [0.6, 0.7, 0.8, 0.9, 1],
+                   "clf__n_estimators": [20, 300, 500, 800, 1200],
+                   "clf__max_depth": [3, 5, 7, 9, 12, 15, 17, 25],
+                   "clf__loss": ["deviance", "exponential"],
+                   "clf__min_samples_split": [2, 5, 10, 15, 100],
+                   "clf__min_samples_leaf": [2, 5, 10],
+                   "clf__max_features": ["sqrt", "log2", None]
+                   }]
 
-No1
-~~~
-
-Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it. As part of your answer, give some background on the dataset and how it can be used to answer the project question. Were there any outliers in the data when you got it, and how did you handle those?  [relevant rubric items: “data exploration”, “outlier investigation”]
-
-
-No2
-~~~
-
-What features did you end up using in your POI identifier, and what selection process did you use to pick them? Did you have to do any scaling? Why or why not? As part of the assignment, you should attempt to engineer your own feature that does not come ready-made in the dataset -- explain what feature you tried to make, and the rationale behind it. (You do not necessarily have to use it in the final analysis, only engineer and test it.) In your feature selection step, if you used an algorithm like a decision tree, please also give the feature importances of the features that you use, and if you used an automated feature selection function like SelectKBest, please report the feature scores and reasons for your choice of parameter values.  [relevant rubric items: “create new features”, “properly scale features”, “intelligently select feature”]
-
-
-No3
-~~~
-
-What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?  [relevant rubric item: “pick an algorithm”]
-
-
-No4
-~~~
-
-What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm? What parameters did you tune? (Some algorithms do not have parameters that you need to tune -- if this is the case for the one you picked, identify and briefly explain how you would have done it for the model that was not your final choice or a different model that does utilize parameter tuning, e.g. a decision tree classifier).  [relevant rubric item: “tune the algorithm”]
-
-
-No5
-~~~
-
-What is validation, and what’s a classic mistake you can make if you do it wrong? How did you validate your analysis?  [relevant rubric item: “validation strategy”]
-
-
-No6
-~~~
-
-Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance. [relevant rubric item: “usage of evaluation metrics”]
-
+Conclusions
+-----------
 
 Code issues and changes
 -----------------------
