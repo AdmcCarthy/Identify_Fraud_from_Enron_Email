@@ -62,6 +62,14 @@ both precision and recall.
 Overview of data
 ----------------
 
+The analysis of the data includes:
+
+Jupyter Notebook Exploring the dataset
+
+Jupyter Notebook Exploring the email data
+
+R Exploratory data anlysis
+
 Person of interest - Label to be predicted
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
