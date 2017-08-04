@@ -11,7 +11,7 @@ Getting Started
 
 Following the biggest corporate scandal in American history
 can emails and finacial information be used to predict
-predict persons of interest in criminal investigations.
+predict persons of interest in the subsequent criminal investigations.
 
 To test results:
 
@@ -33,11 +33,11 @@ Introduction
 The question and dataset are provided in Udacity´s introduction to
 machine learning. The question is to identify a label (person of interest)
 using a predictive model. To predict those in the Enron scandal who
-were under some form of investigation and deemed the title person of interest.
+were under some form of investigation and deemed the title, person of interest.
 
 Machine learning is used here to predict if a person is of interst or not
 based on a large number of variables. Machine learning can work through
-the high number of variables in ways that a human manually interpreting
+the high number of variables (high dimensionality) in ways that a human manually interpreting
 and assessing the data will not be able to achieve.
 
 .. image:: docs\images\Screen_Shot.png
@@ -92,14 +92,11 @@ The email dataset is from `here <https://www.cs.cmu.edu/~./enron/>`_
 Email dataset consists of 150 directories each reflecting a person,
 specified as lastname followed by first letter of first name.
 
-There are 86 people with email data suggesting that those
-without financial data have not been used.
+There are 86 people with email data.
 
 Within poi_names.txt it can be seen with a yes (y),
 no (n) column if the poi has an email directory
-in the dataset. This means the majority
-of poi do not their email inboxes within the Enron Email
-dataset.
+in the dataset.
 
 Financial dataset
 ~~~~~~~~~~~~~~~~~
@@ -121,7 +118,7 @@ An alternative approach would be to only use email
 information to be able to exapand the POI and non-POI
 dataset but that will not be taken further here.
 
-There anomalous values in the dataset.
+There are anomalous values in the dataset.
 
 One person value is TOTAL, which gives a sum of
 values, rather than relating to being a person.
@@ -174,6 +171,12 @@ see table below.
     "total_payments", 21
     "total_stock_value", 20
 
+This will be challeging for the machine learning process,
+a feature selcection process will be useful to remove
+any variables that are not informative, e.g. director fees
+has 129 missing values so is unlikely to be well suited
+within a predictive model.
+
 The TOTAL key relates to an eroneous input, it is
 a an order of magnitude larger than other values. 
 It is the sum of all people in the dataset and is removed using:
@@ -185,96 +188,46 @@ for evidence.
 Email Variables
 ---------------
 
-Email address
-~~~~~~~~~~~~~
+The variables are:
 
-This is a string of the persons
+* Email address
+* From messages
+* From poi to this person
+* From this person to poi
+* Shared receipt with poi
+* To messages
+
+Email address is a string of the persons
 email address, it is not a useful
 variable for making a predictive
 model so is not included in the machine learning.
 
-From messages
-~~~~~~~~~~~~~
-
-From poi to this person
-~~~~~~~~~~~~~~~~~~~~~~~
-
-From this person to poi
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Shared receipt with poi
-~~~~~~~~~~~~~~~~~~~~~~~
-
-To messages
-~~~~~~~~~~~
+See feature engineering for more information
+on email variables.
 
 Financial variables
 -------------------
 
-Bonus
-~~~~~
+* Bonus
+* Deferral payments
+* Deferred income
+* Director fees
+* Exercised stock options
+* Expenses
+* Loan advances
+* Long term incentive
+* Other
+* Restricted stock
+* Restricted stock deffered
+* Salary
+* Total payments
+* Total stock value
 
 Bonuses are highly skewed with top bonsuses being exceedingly
 high.
 
 .. image:: docs\images\Top_Bonuses.png
    :scale: 100 %
-
-Deferral payments
-~~~~~~~~~~~~~~~~~
-
-Only 39 people have this information.
-
-Deferred income
-~~~~~~~~~~~~~~~
-
-49 people with a mean of -1,140,475$.
-The range is -27,992,890$ to -833$.
-This is a negative variable.
-
-Director fees
-~~~~~~~~~~~~~
-
-17 people have this information, so this
-variable is rarely present.
-
-Exercised stock options
-~~~~~~~~~~~~~~~~~~~~~~~
-
-102 people have information.
-
-Expenses
-~~~~~~~~
-
-95 people have this information.
-
-Loan advances
-~~~~~~~~~~~~~
-
-Only four have this information.
-
-Long term incentive
-~~~~~~~~~~~~~~~~~~~
-
-66 people.
-
-Other
-~~~~~
-
-93 people have this value.
-
-Restricted stock
-~~~~~~~~~~~~~~~~
-
-110 have this value.
-
-Restricted stock deffered
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-18 have this value.
-
-Salary
-~~~~~~
 
 95 have salary information.
 The minimum is 477$.
@@ -304,19 +257,33 @@ paid in the company. While high bonus
 moderate salary is a question why they
 have such high bonus.
 
+.. image:: docs\images\bivariate_finacial.png
+   :scale: 100 %
 
-Total payments
-~~~~~~~~~~~~~~
+Using frequency polygons on each of the variables
+and splitting them into groups of POI and non-POI
+gives a quick way to see if any of the variables
+stand out as important.
 
-125 have this value.
+In this case few variables stand out. Loan advances
+is due to so few people having this value.
 
-Total stock value
-~~~~~~~~~~~~~~~~~
+Restricted stock deferred has no members in POI
+which will limit the use of this variable.
 
-126 have information about total stock value.
+.. image:: docs\images\financial_variables_1.png
+   :scale: 100 %
 
-Summary
-~~~~~~~
+Using multi-variate analysis to try and seperate
+POIs from non-POIs is challenging with the finacial
+variables. An initial assumption may be that salary,
+bonus and total payments are important, those commiting
+crimes may have been reciveing more money.
+
+The plot shows a few of these cases with extreme outliers
+away from the main cluster like Kenne Lay and Jerrefry
+Skilling but there are also a number of POIs within the main
+cluster of people.
 
 Some of the figures here are astonishing. The high figures
 and skewed distribution suggest a number of these datasets
@@ -324,6 +291,10 @@ are over disperssed.
 
 There are also some suspicious low values like a the minimum
 salary.
+
+A different feature engineering approach could be to bin
+the values, for example using log spacing between bins.
+This will not be attempted during this first pass.
 
 Outlier removal
 ---------------
