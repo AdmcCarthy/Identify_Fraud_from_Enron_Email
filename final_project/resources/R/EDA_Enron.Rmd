@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 enron <- read.csv(file = "enron_data.csv")
 ```
 
-The dataset is the final data set provided by Udacity for the intro
+The data set is the final data set provided by Udacity for the intro
 to machine learning course.
 
 It includes a combination of financial data and variables created from
@@ -88,7 +88,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 ```
 
 
-```{r echo=FALSE, U2, fig.height = 7.5, fig.width = 5, fig.align="center"}
+```{r echo=FALSE, U2, fig.height = 9, fig.width = 8, fig.align="center",  message=FALSE, warning=FALSE}
 small_hist <- function(data_v, name, scale, df=enron) {
 plt <- ggplot(data = df, aes(data_v)) + 
   geom_histogram(bins = 50,
@@ -128,12 +128,12 @@ multiplot(plt1, plt2, plt3, plt4, plt5,
 ```
 
 The histograms of all of the financial variables highlight a variety of
-distributions present in the dataset. Many of the variables have missing
+distributions present in the data-set. Many of the variables have missing
 values and have these dropped for the plot.
 
-There are no normal distributions, nearly all have skewewd distributions.
+There are no normal distributions, nearly all have skewed distributions.
 
-```{R echo=FALSE, Log_hist, fig.height = 3, fig.width = 5}
+```{R echo=FALSE, Log_hist, fig.height = 5, fig.width = 8,  message=FALSE, warning=FALSE}
 plt1t <-  plt1 + scale_x_log10()
 plt2t <-  plt2 + scale_x_log10()
 plt3t <-  plt3 + scale_x_sqrt()
@@ -154,10 +154,10 @@ multiplot(plt1t, plt2t, plt3t, plt4t, plt5t,
 ```
 
 Data transforms are applied to better represent the distribution of values.
-Either log10 or sqrt are applied. This gives a better visualisation of the
+Either log10 or sqrt are applied. This gives a better visualization of the
 over dispersed variables.
 
-```{r echo=FALSE, U3, fig.height = 3, fig.width = 5, fig.align="center"}
+```{r echo=FALSE, U3, fig.height = 5, fig.width = 8, fig.align="center",  message=FALSE, warning=FALSE}
 plt14 <- small_hist(enron$from_messages, "From messages", "count")
 plt15 <- small_hist(enron$from_poi_to_this_person, "From POI to this person", "count")
 plt16 <- small_hist(enron$from_this_person_to_poi, "From this person to POI", "count")
@@ -170,7 +170,7 @@ multiplot(plt14, plt15, plt16, plt17, plt18, cols = 3)
 
 The variables sourced from emails also show highly skewed variables.
 
-```{R echo=FALSE, Log_hist, fig.height = 3, fig.width = 5}
+```{R echo=FALSE, Log_hist1, fig.height = 5, fig.width = 8,  message=FALSE, warning=FALSE}
 plt20 <- ggplot(aes(x = enron$from_messages), data = enron) +
   geom_histogram(bins = 60,
                  col = "white",
@@ -244,11 +244,11 @@ plt24 <- ggplot(aes(x = enron$shared_receipt_with_poi), data = enron) +
 grid.arrange(plt20, plt21, plt22, plt23, plt24, ncol = 3)
 ```
 
-The data transfromations give a better visualisation of the distribution
+The data transformations give a better visualization of the distribution
 of values, a number of which have more of a normal distribution after a log10
 transformation.
 
-```{r echo=FALSE, BPlots31, fig.height = 6, fig.width = 4, fig.align="center"}
+```{r echo=FALSE, BPlots31, fig.height = 10, fig.width = 8, fig.align="center",  message=FALSE, warning=FALSE}
 freq_poly <-  function(x_v, name, scale, 
                        dataset=enron, group=enron$poi) {
 plt <- qplot(x = x_v, data = dataset,
@@ -294,10 +294,10 @@ multiplot(pltf6, pltf7, pltf8, pltf10,
 For the financial variables frequency polygons are used to investigate persons
 of interest.
 
-A few of the variables are difficult to seperate any trends between POI and
-normal people. 
+A few of the variables are difficult to separate any trends between POI and
+normal people.
 
-```{r echo=FALSE, BPlots1, fig.height = 3, fig.width = 4, fig.align="center"}
+```{r echo=FALSE, BPlots1, fig.height = 5, fig.width = 8, fig.align="center",  message=FALSE, warning=FALSE}
 pltf5 <- freq_poly(enron$shared_receipt_with_poi, 
   "Shared receipt with POI", "Number log 10")
 pltf5 <- pltf5 + scale_x_log10()
@@ -323,7 +323,7 @@ of non-POI responses as well.
 
 From POI to this person suggests higher numbers can be related to other POIs.
 
-From this person to POI is challenging, with mixed occurences of True within
+From this person to POI is challenging, with mixed occurrences of True within
 the distribution.
 
 ```{r echo=FALSE, freq_pair_plot, fig.height = 9, fig.width = 9, message=FALSE, warning=FALSE,}
@@ -339,7 +339,7 @@ The pair plot gives a way to quickly see any highly correlated variables.
 
 Loan advances is removed as it has too few data points.
 
-```{r echo=FALSE, scatter, fig.height = 5, fig.width = 5}
+```{r echo=FALSE, scatter, fig.height = 5, fig.width = 5,  message=FALSE, warning=FALSE}
 ggplot(aes(x = enron$shared_receipt_with_poi, y = enron$to_messages),
        data = enron) +
   geom_point(alpha = 0.2,
@@ -347,7 +347,7 @@ ggplot(aes(x = enron$shared_receipt_with_poi, y = enron$to_messages),
              color = '#192231') +
   theme_tufte() +
   labs(
-    title = "Density vs Fixed Acidity",
+    title = "Shared receipt with poi vs to messages",
     x = "Shared receipt with poi",
     y = "To messages"
     ) +
@@ -355,9 +355,9 @@ ggplot(aes(x = enron$shared_receipt_with_poi, y = enron$to_messages),
               colour = '#192231')
 ```
 
-The
+Investigating the correlation between to messages and shared receipt with POI.
 
-```{r echo=FALSE, scatter2, fig.height = 5, fig.width = 5}
+```{r echo=FALSE, scatter2, fig.height = 5, fig.width = 5,  message=FALSE, warning=FALSE}
 ggplot(aes(x = enron$from_messages, y = enron$from_this_person_to_poi),
        data = enron) +
   geom_point(alpha = 0.2,
@@ -365,17 +365,19 @@ ggplot(aes(x = enron$from_messages, y = enron$from_this_person_to_poi),
              color = '#192231') +
   theme_tufte() +
   labs(
-    title = "Density vs Fixed Acidity",
-    x = "from message",
-    y = "from this person to poi"
+    title = "From messages vs From this person to poi",
+    x = "from message log10",
+    y = "from this person to poi log10"
     ) +
   geom_smooth(method = 'lm', formula = y~x,
-              colour = '#192231')
+              colour = '#192231') + 
+  scale_x_log10() +
+  scale_y_log10() 
 ```
 
-The
+Investigating the correlation of from messages vs from a person of interest.
 
-```{r echo=FALSE, Multivariate_Plots_7, fig.height = 6, fig.width = 9}
+```{r echo=FALSE, Multivariate_Plots_7, fig.height = 8, fig.width = 12,  message=FALSE, warning=FALSE}
 plt_mv7 <- ggplot(aes(x = log10(enron$from_this_person_to_poi/enron$from_messages),
                   y = log10(enron$from_poi_to_this_person/enron$to_messages)),
        data = enron) +
@@ -406,7 +408,7 @@ fnl_plt_4
 The plot uses ratios of email variables to highlight the persons of interest
 and how they vary from non-persons of interest.
 
-```{r echo=FALSE, Multivariate_Plots_8, fig.height = 6, fig.width = 9}
+```{r echo=FALSE, Multivariate_Plots_8, fig.height = 8, fig.width = 12,  message=FALSE, warning=FALSE}
 plt_mv7 <- ggplot(aes(x = log10(enron$total_payments/enron$bonus),
                   y = (enron$salary)),
        data = enron) +
@@ -434,32 +436,5 @@ fnl_plt_4 <- plt_mv7 + geom_point(aes(size = sqrt(enron$exercised_stock_options)
 fnl_plt_4
 ```
 
-The
-
-```{r echo=FALSE, Multivariate_Plots_8, fig.height = 6, fig.width = 9}
-plt_mv7 <- ggplot(aes(x = log10(enron$/enron$bonus),
-                  y = (enron$salary)),
-       data = enron) +
-  geom_point(alpha = 0.01,
-             position = position_jitter()
-             ) +
-  theme_tufte() +
-  labs(
-    title = "Attempting to seperate persons of interest in financial data",
-    x = "log10 total payments / bonus",
-    y = "salary $"
-    )
-fnl_plt_4 <- plt_mv7 + geom_point(aes(size = sqrt(enron$exercised_stock_options)), 
-                                  pch = 21, 
-                                  show.legend = T,
-                                  alpha = 0.5) + 
-  aes(fill = factor(poi)) + geom_text(
-    aes(label = name),
-    hjust = 0, 
-    nudge_x = 0.03,
-    colour = "#9099A2",
-    check_overlap = TRUE,
-    size = 3
-    )
-fnl_plt_4
-```
+The plot uses ratio of total payments and bonus against salary to try and separate out
+POIs.
