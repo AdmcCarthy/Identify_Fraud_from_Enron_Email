@@ -62,11 +62,11 @@ Overview of data
 
 The analysis of the data includes:
 
-Jupyter Notebook Exploring the dataset
+`Jupyter Notebook <https://github.com/AdmcCarthy/Identify_Fraud_from_Enron_Email/blob/master/resources/notebooks/Exploring%20the%20Enron%20Dataset.ipynb>`_ Exploring the dataset
 
-Jupyter Notebook Exploring the email data
+`Jupyter Notebook <https://github.com/AdmcCarthy/Identify_Fraud_from_Enron_Email/blob/master/resources/notebooks/Exploring%20Enron%20Email%20Data.ipynb>`_ Exploring the email data
 
-R Exploratory data analysis
+`Report <https://admccarthy.github.io/Identify_Fraud_from_Enron_Email/>`_ for Exploratory data analysis using R markdown
 
 Person of interest - Label to be predicted
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
