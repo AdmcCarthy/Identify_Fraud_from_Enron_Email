@@ -100,15 +100,15 @@ specified as the last name followed by the first letter of the first name.
 
 There are 86 people with email data.
 
-Within poi_names.txt it can be seen with a yes (y),
+Within `poi_names.txt <https://github.com/AdmcCarthy/Identify_Fraud_from_Enron_Email/blob/master/resources/other/poi_names.txt>`_ it can be seen with a yes (y),
 no (n) column if the poi has an email directory
 in the dataset.
 
 Financial dataset
 ~~~~~~~~~~~~~~~~~
 
-The financial information is sourced from the Enron
-insiderpay pdf which is from Case No. 01-16034.
+The financial information is sourced from the `Enron
+insiderpay pdf <https://github.com/AdmcCarthy/Identify_Fraud_from_Enron_Email/blob/master/resources/other/enron61702insiderpay.pdf>`_ which is from Case No. 01-16034.
 
 There are POIs who have email information but do not
 have financial information.
