@@ -10,34 +10,32 @@ Getting Started
 ---------------
 
 Following the biggest corporate scandal in American history
-can emails and finacial information be used to predict
-predict persons of interest in criminal investigations.
+can emails and financial information be used to predict
+predict persons of interest in the subsequent criminal investigations.
 
 To test results:
 
 .. code-block:: bash
     
-    $ cd final_project
     $ tester.py
 
-To re-run and make the classifier:
+To re-run and store the classifier, and processed data set:
 
 .. code-block:: bash
 
-    $ cd final_project
     $ poi_id.py
 
 Introduction
 ------------
 
-The question and dataset are provided in Udacity´s introduction to
+The question and data set are provided in Udacity´s introduction to
 machine learning. The question is to identify a label (person of interest)
 using a predictive model. To predict those in the Enron scandal who
-were under some form of investigation and deemed the title person of interest.
+were under some form of investigation and deemed the title, person of interest.
 
-Machine learning is used here to predict if a person is of interst or not
+Machine learning is used here to predict if a person is of interest or not
 based on a large number of variables. Machine learning can work through
-the high number of variables in ways that a human manually interpreting
+the high number of variables (high dimensionality) in ways that a human manually interpreting
 and assessing the data will not be able to achieve.
 
 .. image:: docs\images\Screen_Shot.png
@@ -47,14 +45,14 @@ Screen shot from udacity intro to machine learning course.
 
 This report will work through the stages of a machine learning
 investigation. It will begin by giving an overview of the dataset
-and some insights from exploratory data anlysis.
+and some insights from exploratory data analysis.
 
 It will then move onto to feature selection, scaling and engineering.
 
 It will discuss the approach taken to validate and tune the algorithm
-and which metrics area used to evaluate the quality of the model.
+and which metrics are used to evaluate the quality of the model.
 
-Following this will be a review of the different approaches taken and there results.
+Following this will be a review of the different approaches taken and their results.
 
 The objective is to find a methodology which can achieve 0.3 or greater in
 both precision and recall.
@@ -62,10 +60,18 @@ both precision and recall.
 Overview of data
 ----------------
 
+The analysis of the data includes:
+
+Jupyter Notebook Exploring the dataset
+
+Jupyter Notebook Exploring the email data
+
+R Exploratory data analysis
+
 Person of interest - Label to be predicted
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The predicted label is person of interst (POI). A person of interest
+The predicted label is the person of interest (POI). A person of interest
 reflects those in the Enron case who have been
 indicted, settled without admitting guilt
 or testified in exchange for immunity.
@@ -75,7 +81,7 @@ The list was hand drafted from various
 sources so could contain 
 errors.
 
-There are 35 persons of interst in total
+There are 35 persons of interest in total
 30 of which worked for Enron.
 
 Jeffrey Skilling was the CEO during the fraud period.
@@ -90,16 +96,13 @@ Email dataset
 The email dataset is from `here <https://www.cs.cmu.edu/~./enron/>`_
 
 Email dataset consists of 150 directories each reflecting a person,
-specified as lastname followed by first letter of first name.
+specified as the last name followed by the first letter of the first name.
 
-There are 86 people with email data suggesting that those
-without financial data have not been used.
+There are 86 people with email data.
 
 Within poi_names.txt it can be seen with a yes (y),
 no (n) column if the poi has an email directory
-in the dataset. This means the majority
-of poi do not their email inboxes within the Enron Email
-dataset.
+in the dataset.
 
 Financial dataset
 ~~~~~~~~~~~~~~~~~
@@ -118,10 +121,10 @@ i.e. they have all NaN values for financial data will
 cause issues with the machine learning process.
 
 An alternative approach would be to only use email
-information to be able to exapand the POI and non-POI
+information to be able to expand the POI and non-POI
 dataset but that will not be taken further here.
 
-There anomalous values in the dataset.
+There are anomalous values in the dataset.
 
 One person value is TOTAL, which gives a sum of
 values, rather than relating to being a person.
@@ -131,10 +134,10 @@ Enron Final Project dataset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The dataset created by Udacity is aggregated to contain email
-and finacial information.
+and financial information.
 
 It is set up as a key value pair where each key is a person with
-all the features stored as a dictionary as that person value.
+all the features stored in a dictionary as that person value.
 
 There are 146 persons within the dataset. For each person there
 are 21 variables.
@@ -174,107 +177,63 @@ see table below.
     "total_payments", 21
     "total_stock_value", 20
 
-The TOTAL key relates to an eroneous input, it is
-a an order of magnitude larger than other values. 
+This will be challenging for the machine learning process,
+a feature selection process will be useful to remove
+any variables that are not informative, e.g. director fees
+has 129 missing values so is unlikely to be well suited
+within a predictive model.
+
+The TOTAL key relates to an erroneous input, it is
+an order of magnitude larger than other values. 
 It is the sum of all people in the dataset and is removed using:
 
 Other large values have been checked and are
-associated to real people. See enron61702insiderpay.pdf
+associated with real people. See enron61702insiderpay.pdf
 for evidence.
 
 Email Variables
 ---------------
 
-Email address
-~~~~~~~~~~~~~
+The variables are:
 
-This is a string of the persons
+* Email address
+* From messages
+* From poi to this person
+* From this person to poi
+* Shared receipt with poi
+* To messages
+
+Email address is a string of the persons
 email address, it is not a useful
 variable for making a predictive
 model so is not included in the machine learning.
 
-From messages
-~~~~~~~~~~~~~
-
-From poi to this person
-~~~~~~~~~~~~~~~~~~~~~~~
-
-From this person to poi
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Shared receipt with poi
-~~~~~~~~~~~~~~~~~~~~~~~
-
-To messages
-~~~~~~~~~~~
+See feature engineering for more information
+on email variables.
 
 Financial variables
 -------------------
 
-Bonus
-~~~~~
+* Bonus
+* Deferral payments
+* Deferred income
+* Director fees
+* Exercised stock options
+* Expenses
+* Loan advances
+* Long term incentive
+* Other
+* Restricted stock
+* Restricted stock deferred
+* Salary
+* Total payments
+* Total stock value
 
-Bonuses are highly skewed with top bonsuses being exceedingly
+Bonuses are highly skewed with top bonuses being exceedingly
 high.
 
 .. image:: docs\images\Top_Bonuses.png
    :scale: 100 %
-
-Deferral payments
-~~~~~~~~~~~~~~~~~
-
-Only 39 people have this information.
-
-Deferred income
-~~~~~~~~~~~~~~~
-
-49 people with a mean of -1,140,475$.
-The range is -27,992,890$ to -833$.
-This is a negative variable.
-
-Director fees
-~~~~~~~~~~~~~
-
-17 people have this information, so this
-variable is rarely present.
-
-Exercised stock options
-~~~~~~~~~~~~~~~~~~~~~~~
-
-102 people have information.
-
-Expenses
-~~~~~~~~
-
-95 people have this information.
-
-Loan advances
-~~~~~~~~~~~~~
-
-Only four have this information.
-
-Long term incentive
-~~~~~~~~~~~~~~~~~~~
-
-66 people.
-
-Other
-~~~~~
-
-93 people have this value.
-
-Restricted stock
-~~~~~~~~~~~~~~~~
-
-110 have this value.
-
-Restricted stock deffered
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-18 have this value.
-
-Salary
-~~~~~~
 
 95 have salary information.
 The minimum is 477$.
@@ -296,34 +255,50 @@ couple of key outliers. These outliers mean
 that a linear model is only useful for the
 cluster of values associated with lower salary
 and smaller bonuses. The outliers drag the regression
-model, for example see the blue trend line.
+model, for example, see the blue trend line.
 
 All outliers are interesting data points.
 High salary, high bonus pairs are the top
-paid in the company. While high bonus 
-moderate salary is a question why they
-have such high bonus.
+paid in the company.
 
+.. image:: docs\images\bivariate_finacial.png
+   :scale: 100 %
 
-Total payments
-~~~~~~~~~~~~~~
+Using frequency polygons on each of the variables
+and splitting them into groups of POI and non-POI
+gives a quick way to see if any of the variables
+stand out as important.
 
-125 have this value.
+In this case, few variables stand out. Loan advances
+is due to so few people having this value.
 
-Total stock value
-~~~~~~~~~~~~~~~~~
+Restricted stock deferred has no members in POI
+which will limit the use of this variable.
 
-126 have information about total stock value.
+.. image:: docs\images\financial_variables_1.png
+   :scale: 100 %
 
-Summary
-~~~~~~~
+Using multivariate analysis to try and separate
+POIs from non-POIs is challenging with the financial
+variables. An initial assumption may be that salary,
+bonus and total payments are important, those committing
+crimes may have been receiving more money.
+
+The plot shows a few of these cases with extreme outliers
+away from the main cluster like Kenne Lay and Jerrefry
+Skilling but there are also a number of POIs within the main
+cluster of people.
 
 Some of the figures here are astonishing. The high figures
-and skewed distribution suggest a number of these datasets
-are over disperssed.
+and skewed distribution suggests a number of these datasets
+are over dispersed.
 
-There are also some suspicious low values like a the minimum
+There are also some suspicious low values like the minimum
 salary.
+
+A different feature engineering approach could be to bin
+the values, for example using log spacing between bins.
+This will not be attempted during this first pass.
 
 Outlier removal
 ---------------
@@ -348,7 +323,7 @@ Feature selection
 
 Four ensemble or tree classifiers are run to investigate
 feature importance. This is using the entire dataset
-and all variable apart from email address and name of person.
+and all variable apart from email address and name of the person.
 
 The prediction is for the target, POI.
 
@@ -367,26 +342,26 @@ The prediction is for the target, POI.
 Exercised stock options is the most important
 feature in three of the classifiers.
 
-In AdaBoost the deffered income followed by bonus
+In AdaBoost the deferred income followed by bonus
 are the most important.
 
 Decision tree does not use many of the variables.
 
-Director fees is consitently of low (almost no) importance.
+Director fees are consistently low (almost no) importance.
 
-Loan advances is of low importance but has minor
+Loan advances are of low importance but has minor
 impact.
 
 restricted_stock_deferred is either of no importance
-or of minor importance. Similary deferral_payments is
-of no to little importance.
+or of minor importance. Similarly, deferral_payments is
+of little importance.
 
 This gives four variables with very little importance,
-Director fees, loan advances, restricted stock deffered
-and defferal payments.
+Director fees, loan advances, restricted stock deferred
+and deferral payments.
 
 A way to select these variables will be using
-a limit on importance. For example AdaBoost feature
+a limit on importance. For example, AdaBoost feature
 importance <0.02 will remove the weakest four
 variables. Upon implementation a default ratio of
 0.01 is used as the cut-off.
@@ -396,12 +371,12 @@ between the different algorithms. For example
 from_poi_to_this_person. These variables may
 have potential to be combined in pairs or other combinations.
 This will reduce the total number of variables
-and potentially increase the signifance.
+and potentially increase the significance.
 
-Feature engineeering
---------------------
+Feature engineering
+-------------------
 
-Within the email data there are five variables.
+Within the email data, there are five variables.
 
 .. image:: docs\images\email_poi.png
    :scale: 100 %
@@ -417,7 +392,7 @@ The second the ratio of emails to a POI compared to
 the total number of emails that person has sent.
 
 The idea being that this will highlight persons of
-interest better than the two variables seperately.
+interest better than the two variables separately.
 
 When using these ratios the input variables will
 be removed. So from_messages, to_messages, from_poi_to_this_person
@@ -428,12 +403,12 @@ Feature Scaling
 
 Feature scaling is often a requirement for effective machine learning.
 
-Exploratory data anlysis has shown that even after removing the
+Exploratory data analysis has shown that even after removing the
 extreme outlier, TOTAL, a number of the variables have over
-disperssed data.
+dispersed data.
 
 A robust scaler can be used for datasets with many outliers. This will
-use more robust estimates for central tendancy and dispersion before
+use more robust estimates for central tendency and dispersion before
 scaling the dataset.
 
 Cross-validation and optimization
@@ -443,28 +418,28 @@ To make a classifier that works well on new or unseen data
 cross validation aids the algorithm from overfitting on the
 training data.
 
-Firstly the data is sperated into a train and test set using
+Firstly the data is separated into a train and test set using
 train test split, with 30% held back for testing. This gives
 29 people for testing and 65 people for training.
 
-This training data is the used further.
+The training data is then used further.
 
 By splitting up the available data (e.g. only the training data)
-into seperate groups, these can be used to cross-validate the
+into separate groups, these can be used to cross-validate the
 performance of a classifier.
 
 In sklearn one useful approach is GridSearchCV, which combines
 cross-validation and parameter optimization.
 
-Each classifer will have a range of parameters that are not
-learnt when the classifer is fitted to the data. Each of
-these are passed as arguments. These can have a large impact
-on the performance of the classifier and fundamentaly change
+Each classifier will have a range of parameters that are not
+learnt when the classifier is fitted to the data. Each of
+these is passed as arguments. These can have a large impact
+on the performance of the classifier and fundamentally change
 how it approaches making predictions using this dataset.
 
 Parameter optimization can be undertaken manually, running
 different combinations of parameters to see which performs
-best but GridSearchCV will compare combinations of classifier
+best but GridSearchCV will compare combinations of the classifier
 parameters and see which performs the best during cross
 validation.
 
@@ -474,7 +449,7 @@ proportion of labels across the folds of data.
 
 Note that when using 3 folds 65 persons become
 around 22 and 2 folds 32. This means this problem
-set is always workign with a very small dataset.
+set is always working with a very small dataset.
 Having a large number of variables will not be a good
 idea with such a small dataset.
 
@@ -484,7 +459,7 @@ Evaluation metrics
 This problem is a skewed binary classification, therefore accuracy is
 not the best metric to judge the reliability of the evaluation.
 
-There is an assymetry in this problem, we can optimize
+There is an asymmetry in this problem, we can optimize
 for placing more people as innocent
 or more people as guilty. Or aim for a balance between the two.
 
@@ -492,7 +467,7 @@ or more people as guilty. Or aim for a balance between the two.
     Out of all the items that are truly positive, how many were correctly classified as positive. Or simply, how many positive items were 'recalled' from the dataset.
 
     Precision: True Positive / (True Positive + False Positive). 
-    Out of all the items labeled as positive, how many truly belong to the positive class.
+    Out of all the items labelled as positive, how many truly belong to the positive class.
 
 A high recall low precision model would give greater confidence that flagged POIs
 are truly POI but may miss out on POIs. This would be suitable if avoiding flagging
@@ -516,7 +491,7 @@ Testing classifiers
 Default setting
 ~~~~~~~~~~~~~~~
 
-Using the default setting of one label and one feature we can take an intitial review. of the prediction.
+Using the default setting of one label and one feature we can take an initial review. of the prediction.
 
 .. code-block:: python
 
@@ -524,7 +499,7 @@ Using the default setting of one label and one feature we can take an intitial r
 
 The outputs for the initial algorithm (Gaussian Naive Bayes) is compared to three other algorithms.
 
-.. csv-table:: Algorith comparisson
+.. csv-table:: Algorithm comparison
    :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
    :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 
@@ -535,7 +510,7 @@ The outputs for the initial algorithm (Gaussian Naive Bayes) is compared to thre
    "KMeans", 0.738, 0.043, 0.013, 0.020, 0.015, 370, 1, 22, 75, 272
 
 
-Adaboost performs considerably slower.
+AdaBoost performs considerably slower.
 
 KMeans gives warning about predicted labels not equal to 0 or 1.
 
@@ -550,7 +525,7 @@ a gradient boosting classifier is used with GridSearchCv. This means that
 parameters can be optimized across cross-validations (in this run 2 folds
 using stratified k fold). The score to optimize on is F1 weighted.
 
-This is not removing any zeros, and using all features as input
+This is not removing any zeros and using all features as input
 apart from email address and those that duplicate ratio feature
 engineering.
 
@@ -582,17 +557,17 @@ Best classifier score: 0.894907227728 :
 When applying this method using the testing function the results are:
 
 
-.. csv-table:: Algorith comparisson
+.. csv-table:: Algorithm comparison
    :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
    :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 
    "Gradient Boosting", 0.862, 0.454, 0.186, 0.264, 0.211, 15000, 373, 448, 1627, 12552
 
-This method has improved on the origional methods but stil does not achieve
-0.3 for precesion and recall.
+This method has improved on the original methods but still does not achieve
+0.3 for precision and recall.
 
-The 0.45 for precesion compared to the 0.19 for recall suggests that
-it is finding nearly half the POIs but flagging to many non POIs as guilty.
+The 0.45 for precision compared to the 0.19 for recall suggests that
+it is finding nearly half the POIs but flagging too many non-POIs as guilty.
 
 Further feature optimization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -611,17 +586,17 @@ shown here:
 total_payments', 'total_stock_value', 
 'ratio_to_poi', 'ratio_from_poi']
 
-Of these only deferred_income is currently passing through
+Of this only deferred_income is currently passing through
 the feature selection process. Note that bonus has also been
 dropped. It is suspected that bonus is dropped as it
 is correlated to a number of other variables, seen in the
 pair plot during EDA.
 
-Increasing the cut-off to 0.03 drops total_stock_value 
+Increasing the cutoff to 0.03 drops total_stock_value 
 and shared_receipt_with_poi. This does not improve the results
 using the current classifier.
 
-The current classifer is likely overfitting the dataset
+The current classifier is likely overfitting the dataset
 and is giving more precision than recall.
 
 Logistic Regression
@@ -631,7 +606,7 @@ Ensemble methods like gradient boosting can be prone to
 overfitting so trying a different model type may lead to
 different results.
 
-Instead of default this uses a cut of 0.03:
+Instead of default, this uses a cut of 0.03:
 
 .. code-block:: Python
 
@@ -642,7 +617,7 @@ Instead of default this uses a cut of 0.03:
                                                  cut_off=0.03
                                                  )
 
-.. csv-table:: Algorith comparisson
+.. csv-table:: Algorithm comparison
    :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
    :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 
@@ -650,18 +625,18 @@ Instead of default this uses a cut of 0.03:
 
 Similar problems occur as when using the previous classifier with a higher precision than recall.
 
-Futher approaches like PCA and more advanced feature selection can be undertaken to see if this
-improves performace.
+Further approaches like PCA and more advanced feature selection can be undertaken to see if this
+improves performance.
 
 Pipeline - Anova Feature Selection > PCA > Logistic Regression
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To expand the classifer sklearns pipeline module can be used to expand
-the number of steps within the classifer. The main purpose of this is
+To expand the classifier sklearns pipeline module can be used to expand
+the number of steps within the classifier. The main purpose of this is
 to allow grid search cv to explore different combinations automatically
-rather than perfoming manual adjustments.
+rather than performing manual adjustments.
 
-Feature selction will select fixed number of components based on
+Feature selection will select fixed number of components based on
 a classification ANOVA (Analysis of variance) statistical test.
 The grid search can iterate over different numbers of components (k)
 to explore which number of features removed works best.
@@ -670,14 +645,14 @@ Principal component analysis can reduce the dimensionality of the dataset
 and reduce the number of features used for machine learning further.
 This is beneficial in this case as there are few training data points
 and a high variance to the results. The standard PCA method will be applied
-with the number of components being iterated through the grid search.
+to the number of components being iterated through the grid search.
 
 The plan is to get better performance by reducing the number of features used
 in a machine learning algorithm like logistic regresssion. The results are:
 
 Best classifier score: 0.847349475383 : {'r_dim__n_components': 2, 'r_dim__whiten': True, 'clf__C': 0.1, 'anova__k': 8, 'clf__class_weight': 'balanced'}
 
-.. csv-table:: Algorith comparisson
+.. csv-table:: Algorithm comparison
    :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
    :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 
@@ -685,36 +660,34 @@ Best classifier score: 0.847349475383 : {'r_dim__n_components': 2, 'r_dim__white
 
 
 This just achieves the goal of being above 0.3 for precision and recall.
-Note that the method uses just 2 components of data based on only 8 feautures.
-This suggests that the pipeline approach is a good approach for this problem.
+Note that the method uses just 2 components of data based on only 8 features.
+This suggests that a pipeline approach is a good approach for this problem.
 
 The f1 score here is 0.35, with a higher recall than precision.
 This suggests that more POI are being found more accurately but there
 are still a significant proportion of POI who are not identified.
 
-Pipeline - Anova Feature Selection > PCA > Gradient Boosting
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Can a different method achieve an even higher score. Taking
-an exhaustive approach using gradient boosting gives 360,000 combinations.
-
-.. code-block:: Python
-
-    parameters = [{
-                   "anova__k": [6, 8, 10, 12, "all"],
-                   "r_dim__n_components": [2, 4],
-                   "r_dim__whiten": [True, False],
-                   "clf__subsample": [0.6, 0.7, 0.8, 0.9, 1],
-                   "clf__n_estimators": [20, 300, 500, 800, 1200],
-                   "clf__max_depth": [3, 5, 7, 9, 12, 15, 17, 25],
-                   "clf__loss": ["deviance", "exponential"],
-                   "clf__min_samples_split": [2, 5, 10, 15, 100],
-                   "clf__min_samples_leaf": [2, 5, 10],
-                   "clf__max_features": ["sqrt", "log2", None]
-                   }]
-
 Conclusions
 -----------
+
+The logistic regression combined with PCA and ANOVA feature selection 
+offers an estimator which gives above 0.3 for both Precision and Recall.
+This achieves the objective criteria. This is a balanced model.
+
+Other methods have been attempted. One which is documented is Gradient Boost
+which overfits the data giving a high precision (0.45) but poor recall, meaning
+that it is predicting too many cases to be a person of interest.
+
+Further work could be undertaken to improve this. Further optimization
+could be attempted using Logistic Regression and its parameters.
+
+New features could be generated from the email corpus. Highlighting
+key a word set (for example related to specific criminal activities
+like electric grid manipulation) which relates somehow to POI. This would expand the
+input variables to perhaps include information to improve performance.
+
+Overall this is a challenging case due to the limited size of the dataset
+and mixed missing values across different people.
 
 Code issues and changes
 -----------------------
@@ -732,7 +705,7 @@ Changed to:
 Pickle
 ~~~~~~
 
-Changed code in both poi_id.py and tester.py to fit with python 3 and pickle otherwise a TypeError is returned.
+Changed code in both poi_id.py and tester.py to fit with Python 3 and pickle otherwise a TypeError is returned.
 Now has to include "rb" (read binary) and "wb" (write binary) instead of "r" and "w" respectively.
 
 From:
@@ -753,7 +726,7 @@ To:
 Depreciation of CV
 ~~~~~~~~~~~~~~~~~~
 
-Code returns this warning.
+The code returns this warning.
 
     DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functio
     ns are moved. Also note that the interface of the new CV iterators are different from that of this module. This module w
@@ -765,7 +738,7 @@ and requires this.
 Resources used
 ~~~~~~~~~~~~~~~
 
-I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, github repositories, etc.
+I hereby confirm that this submission is my work. I have cited above the origins of any parts of the submission that were taken from Websites, books, forums, blog posts, GitHub repositories, etc.
 
 `Sklearn API <http://scikit-learn.org/stable/modules/classes.html>`_
 
