@@ -17,14 +17,12 @@ To test results:
 
 .. code-block:: bash
     
-    $ cd final_project
     $ tester.py
 
-To re-run and make the classifier:
+To re-run and store the classifier, and processed data set:
 
 .. code-block:: bash
 
-    $ cd final_project
     $ poi_id.py
 
 Introduction
