@@ -152,7 +152,7 @@ Most of the values have a range of missing parameters,
 see table below.
 
 .. csv-table:: Datset Variables
-   :header: "Variable, "Missing Values"
+   :header: "Variable", "Missing Values"
    :widths: 15, 5
 
     "bonus", 64
@@ -275,7 +275,7 @@ is due to so few people having this value.
 Restricted stock deferred has no members in POI
 which will limit the use of this variable.
 
-.. image:: docs\images\financial_variables_1.png
+.. image:: docs\images\financial_1.png
    :scale: 100 %
 
 Using multivariate analysis to try and separate
@@ -691,16 +691,6 @@ and mixed missing values across different people.
 
 Code issues and changes
 -----------------------
-
-File Location
-~~~~~~~~~~~~~
-
-Kept getting errors about not being able to locate the file based off of the string in the original code.
-Changed to:
-
-.. code-block:: Python
-
-    f = os.path.abspath("final_project/final_project_dataset.pkl")
 
 Pickle
 ~~~~~~
