@@ -65,6 +65,9 @@ if fe:
 
 # Feature selection
 if fs:
+    # Chooses an AdaBoost classifier for feature selection.
+    #
+    # Overwrite this to try different SkLearn Classifiers.
     clf_fs = feature_selection.get_fs_clf()
     # Overwrite feature list after feature selection
     features_list = feature_selection.selection(
@@ -93,8 +96,14 @@ data = feature_format.featureFormat(
                                     )
 labels, features = feature_format.targetFeatureSplit(data)
 
-features_train, features_test, labels_train, labels_test = \
-    train_test_split(features, labels, test_size=0.3, random_state=42)
+# No train test split is used.
+#
+# Final validation uses tester.py to compare to a test set.
+#
+# GridSearch CV involves an inner-loop stratified K-Fold
+# cross validation.
+features_train = features
+label_train = labels
 
 # Tune the classifier to achieve better than .3 precision and recall
 #
