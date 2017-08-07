@@ -25,6 +25,8 @@ To re-run and store the classifier, and processed data set:
 
     $ poi_id.py
 
+View `report <https://admccarthy.github.io/Identify_Fraud_from_Enron_Email/>`_ on GitHub pages. 
+
 Introduction
 ------------
 
