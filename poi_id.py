@@ -3,7 +3,6 @@
 from __future__ import print_function
 import pickle
 import os
-from sklearn.cross_validation import train_test_split
 from tester import dump_classifier_and_data
 from learnEnron import (
                         feature_format,
@@ -68,6 +67,10 @@ if fe:
     data_dict = feature_engineering.email_ratios(data_dict)
 
 # Feature selection
+#
+# When pipe is True an ANOVA feature selction using
+# KBest feature selection is used during GridSearchCV.
+# This is more effective than this feature selection approach.
 if fs:
     # Chooses an AdaBoost classifier for feature selection.
     #
