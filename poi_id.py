@@ -56,8 +56,12 @@ with open(f, "rb") as data_file:
 
 # Remove outliers
 if ro:
+    # Total of all people
     data_dict.pop("TOTAL", None)
+    # Not a person
     data_dict.pop("THE TRAVEL AGENCY IN THE PARK", None)
+    # Only contains missing values
+    data_dict.pop("LOCKHART E", None)
 
 # Feature engineering
 if fe:
@@ -103,7 +107,7 @@ labels, features = feature_format.targetFeatureSplit(data)
 # GridSearch CV involves an inner-loop stratified K-Fold
 # cross validation.
 features_train = features
-label_train = labels
+labels_train = labels
 
 # Tune the classifier to achieve better than .3 precision and recall
 #
