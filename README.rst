@@ -25,6 +25,8 @@ To re-run and store the classifier, and processed data set:
 
     $ poi_id.py
 
+View `report <https://admccarthy.github.io/Identify_Fraud_from_Enron_Email/>`_ on GitHub pages. 
+
 Introduction
 ------------
 
@@ -364,14 +366,28 @@ A way to select these variables will be using
 a limit on importance. For example, AdaBoost feature
 importance <0.02 will remove the weakest four
 variables. Upon implementation a default ratio of
-0.01 is used as the cut-off.
+0.01 is used as the cut-off. This is based of the
+four graphs and experimenting with different values.
 
-The moderate variables tend to change in importance
-between the different algorithms. For example
-from_poi_to_this_person. These variables may
-have potential to be combined in pairs or other combinations.
-This will reduce the total number of variables
-and potentially increase the significance.
+.. csv-table:: Algorithm comparison
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+
+   "Logistic Regression with feature selection", 0.84, 0.33, 0.17, 0.23, 0.19, 15000, 364, 712, 1654, 12288
+   "Logistic Regression without feature selection", 0.84, 0.35, 0.26, 0.3, 0.27, 15000, 520, 950, 1480, 12050
+
+The better scores without feature selection
+shows this is not the best approach
+for feature selection. See further down in the
+report for information about logistic regression
+implementation, this versio uses the total dataset.
+
+After initial trials using this feature selection approach
+an iterative univariate ANOVA feature selection step
+is added into the final pipeline. This uses Kbest
+and iterates through a range of parameters during GridSearchCV
+to find the best number of features to use. See further
+in the report for more information.
 
 Feature engineering
 -------------------
@@ -453,6 +469,19 @@ set is always working with a very small dataset.
 Having a large number of variables will not be a good
 idea with such a small dataset.
 
+The validation is undertaken using poi_id.py
+this outputs the accuracy.
+
+After a good estimator is found
+this is compared to a test set using tester.py.
+Which gives precision, recall and F1 which can
+give a better a review of the performance.
+
+A limitation in this approach is by using the
+performance from the test set this can leak into
+into the evaluation and lead to overfitting on
+new data.
+
 Evaluation metrics
 ------------------
 
@@ -469,11 +498,11 @@ or more people as guilty. Or aim for a balance between the two.
     Precision: True Positive / (True Positive + False Positive). 
     Out of all the items labelled as positive, how many truly belong to the positive class.
 
-A high recall low precision model would give greater confidence that flagged POIs
+A high precision low recall model would give greater confidence that flagged POIs
 are truly POI but may miss out on POIs. This would be suitable if avoiding flagging
 innocent people is the most important issue.
 
-A high precision low recall model would find nearly all POIs but also flag others as
+A hhigh recall low precision model would find nearly all POIs but also flag others as
 involved when they are innocent. This would be useful if screening a large number
 of people to quickly decide who to focus on for further investigation.
 
@@ -657,6 +686,7 @@ Best classifier score: 0.847349475383 : {'r_dim__n_components': 2, 'r_dim__white
    :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 
    "Logistic Regression", 0.80, 0.315, 0.392, 0.349, 0.374, 15000, 784, 1705, 1216, 11295
+   "Logistic Regression full data set", 0.81, 0.324, 0.391, 0.354, 0.376, 15000, 782, 1630, 1218, 11370
 
 
 This just achieves the goal of being above 0.3 for precision and recall.
@@ -666,6 +696,10 @@ This suggests that a pipeline approach is a good approach for this problem.
 The f1 score here is 0.35, with a higher recall than precision.
 This suggests that more POI are being found more accurately but there
 are still a significant proportion of POI who are not identified.
+
+Following creation of estimators, poi_id.py is changed to use all of the data
+for training. While tester.py is used to compare the results. These give
+similar results as seen in the table above.
 
 Conclusions
 -----------

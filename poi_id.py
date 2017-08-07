@@ -3,7 +3,6 @@
 from __future__ import print_function
 import pickle
 import os
-from sklearn.cross_validation import train_test_split
 from tester import dump_classifier_and_data
 from learnEnron import (
                         feature_format,
@@ -56,15 +55,26 @@ with open(f, "rb") as data_file:
 
 # Remove outliers
 if ro:
+    # Total of all people
     data_dict.pop("TOTAL", None)
+    # Not a person
     data_dict.pop("THE TRAVEL AGENCY IN THE PARK", None)
+    # Only contains missing values
+    data_dict.pop("LOCKHART E", None)
 
 # Feature engineering
 if fe:
     data_dict = feature_engineering.email_ratios(data_dict)
 
 # Feature selection
+#
+# When pipe is True an ANOVA feature selction using
+# KBest feature selection is used during GridSearchCV.
+# This is more effective than this feature selection approach.
 if fs:
+    # Chooses an AdaBoost classifier for feature selection.
+    #
+    # Overwrite this to try different SkLearn Classifiers.
     clf_fs = feature_selection.get_fs_clf()
     # Overwrite feature list after feature selection
     features_list = feature_selection.selection(
@@ -93,8 +103,14 @@ data = feature_format.featureFormat(
                                     )
 labels, features = feature_format.targetFeatureSplit(data)
 
-features_train, features_test, labels_train, labels_test = \
-    train_test_split(features, labels, test_size=0.3, random_state=42)
+# No train test split is used.
+#
+# Final validation uses tester.py to compare to a test set.
+#
+# GridSearch CV involves an inner-loop stratified K-Fold
+# cross validation.
+features_train = features
+labels_train = labels
 
 # Tune the classifier to achieve better than .3 precision and recall
 #
