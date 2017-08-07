@@ -33,6 +33,10 @@ def selection(dataset, feature_list, clf, cut_off=0.01):
     Cut off should vary depending on which type
     of classifier is used.
 
+    The deafault cut-off will remove the four
+    least important features, this is based on investigating
+    plots of feature importance using different classifiers.
+
     Parameters
     ----------
     dataset = dict
