@@ -414,6 +414,77 @@ When using these ratios the input variables will
 be removed. So from_messages, to_messages, from_poi_to_this_person
 and from_this_person_to_poi are not used when using feature engineering.
 
+To check the result of implementing feature engineering
+the final estimator will be used to check the output
+results with and without feature engineering.
+
+The three tests are, with feature engineering and therefore
+
+.. code-block:: Python
+
+    fe = True  # Feature engineering
+                 
+
+With parameters:
+
+    "ratio_to_poi",
+    "ratio_from_poi"
+
+Without feature engineering and with the original variables
+included.
+
+.. code-block:: Python
+
+    fe = False  # Feature engineering
+
+with parameters:
+
+    "from_messages", 
+    "to_messages", 
+    "from_poi_to_this_person", 
+    "from_this_person_to_poi"
+
+With feature engineering but include original features. Note
+these will likely be removed by the ANOVA feature selection
+layer in the pipeline. A grid search will optimize each of these
+estimators each will have different parameter combinations.
+
+.. code-block:: Python
+
+    fe = True  # Feature engineering
+
+with parameters:
+
+    "ratio_to_poi",
+    "ratio_from_poi",
+    "from_messages", 
+    "to_messages", 
+    "from_poi_to_this_person", 
+    "from_this_person_to_poi"
+
+Each of these is using the full data set to train on.
+
+.. csv-table:: Algorithm comparison
+   :header: "Algorithm", "Accuracy", "Precision", "Recall", "F1", "F2", "Tot. pred.", "True pos.", "False pos.", "False neg.", "True neg."
+   :widths: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+
+   "Logistic Regression with feature engineering", 0.81, 0.315, 0.392, 0.349, 0.374, 15000, 784, 1705, 1216, 11295
+   "Logistic Regression without feature engineering", 0.806, 0.318, 0.396, 0.352, 0.377, 15000, 791, 1700, 1209, 11300
+   "Logistic Regression with feature engineering and original variables", 0.84, 0.425, 0.565, 0.485, 0.53, 15000, 1129, 1526, 871, 11474
+
+With the feature engineering uses k=8 for feature selection.
+
+Without feature engineering uses k=8 for feature selection. There is little performance
+difference between these two options. This may relate to the overall importance of the email
+variables compared to the financial variables.
+
+With feature engineering and all variables uses k='all' for feature selection. This led to a surprise,
+an increase was achieved on both precision and recall. Giving an F1 score or 0.46. This approach
+leads to the best estimators, further information can be found in the results section, the pipeline with all features.
+
+NOTE with feature engineering and all variables appears to lead to different estimators
+during each run of the GridSearchCV.
+
 Feature Scaling
 ---------------
 
@@ -700,6 +771,35 @@ are still a significant proportion of POI who are not identified.
 Following creation of estimators, poi_id.py is changed to use all of the data
 for training. While tester.py is used to compare the results. These give
 similar results as seen in the table above.
+
+Pipeline - With all features
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Following testing of the impact feature engineering has all
+features were tested including the engineered features and
+the original features used to create these.
+
+This led to a surprising result, higher performance was
+achieved using the pipeline and it would often select
+k='all'. So it is using all features after the initial
+static feature selection even though
+a number may have linear correlations or are so
+sparsely populated.
+
+Furthermore, the pipeline is now unstable during GridSearchCV
+and will give slightly different estimators which lead to
+different results when running tester.py to compare performance.
+
+The conclusion is still valid but scores now increase especially for the recall which can achieve above 0.6 and precision above 0.406. One
+example is below.
+
+    Pipeline(steps=[('anova', SelectKBest(k='all', score_func=<function f_classif at 0x1184416a8>)), ('r_dim', PCA(copy=True, iterated_power='auto', n_components=4, random_state=None,
+    svd_solver='auto', tol=0.0, whiten=True)), ('clf', LogisticRegression(C=100, class_weight='balanced', dual=False,
+          fit_intercept=True, intercept_scaling=1, max_iter=100,
+          multi_class='ovr', n_jobs=1, penalty='l2', random_state=None,
+          solver='liblinear', tol=0.0001, verbose=0, warm_start=False))])
+        Accuracy: 0.82633       Precision: 0.40632      Recall: 0.65600 F1: 0.50182     F2: 0.58420
+        Total predictions: 15000        True positives: 1312    False positives: 1917   False negatives:  688   True negatives: 11083
 
 Conclusions
 -----------
