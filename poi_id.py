@@ -41,8 +41,12 @@ features_list = ['poi',
                  'shared_receipt_with_poi',
                  'total_payments',
                  'total_stock_value',
-                 "ratio_to_poi",
-                 "ratio_from_poi"
+                 'ratio_to_poi',
+                 'ratio_from_poi',
+                 'from_messages',
+                 'to_messages',
+                 'from_poi_to_this_person',
+                 'from_this_person_to_poi'
                  ]
 
 # Use os.path.abspath to access the file
